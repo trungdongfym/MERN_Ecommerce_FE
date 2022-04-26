@@ -4,14 +4,25 @@ import {
    UPDATE_USER
 } from '../constants';
 
-function userReducer(state, action) {
+const intialState = {
+   user: null,
+}
+
+function userReducer(state = intialState, action) {
    switch (action.type) {
       case ADD_USER:
-         break;
+         return {
+            user: action.payload
+         }
       case DELETE_USER:
-         break;
+         return {
+            user: action.payload
+         }
       case UPDATE_USER:
-         break;
+         return {
+            ...state,
+            ...action.payload
+         }
       default:
          return state;
    }

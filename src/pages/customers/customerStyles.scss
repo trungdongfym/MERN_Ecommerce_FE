@@ -1,0 +1,40 @@
+@use '../../styles/abstracts/' as *;
+
+.auth__content__form.register{
+   .progressBar{
+      color: #fff;
+      margin-left: 5px;
+   }
+
+   & .userAccount{
+      & .alert_register{
+         margin-top: 1rem;
+      }
+   }
+
+   & .registerSuccess{
+      margin: 2rem 0 2rem 0;
+      
+      & .alert{
+         font-size: 16px;
+         align-items: center;
+         font-weight: 550;
+      }
+
+      & .emailRegisted{
+         text-align: start;
+         margin: 1rem 0 1rem 0;
+         font-weight: 500;
+      }
+
+      & .note{
+         @extend .emailRegisted;
+      }
+      
+      & .loginNow{
+         background-color: $oceanColor;
+         color: #fff;
+         margin-top: 1.5rem;
+      }
+   }
+}

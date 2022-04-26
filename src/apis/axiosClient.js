@@ -15,7 +15,7 @@ const axiosClient = axios.create({
 let RefeshTokenApi = null;
 // Do something before request
 axiosClient.interceptors.request.use((config) => {
-   
+   return config;
 }, (err) => {
    return new Promise.reject(err);
 });
@@ -24,7 +24,8 @@ axiosClient.interceptors.response.use((response) => {
    if (response && response.data) return response.data;
    return response;
 }, (err) => {
-   return new Promise.reject(err);
+   const { response } = err;
+   throw new Error(response.data);
 });
 
 export default axiosClient;

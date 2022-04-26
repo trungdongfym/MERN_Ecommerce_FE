@@ -1,0 +1,1 @@
+export const registerLink = '/register';

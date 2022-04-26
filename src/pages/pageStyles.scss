@@ -1,0 +1,218 @@
+// ----------------------------------------Style page login------------------------------------------------------
+@use '../styles/abstracts/'as *;
+
+.auth {
+   background-color: $loginPageBg;
+   width: auto;
+   min-height: 100vh;
+   padding: 0rem 5rem;
+
+   @include tablet {
+      padding: 4rem 1rem;
+   }
+
+   &__wrapper {
+      max-width: $loginFormMaxWidth;
+      margin: auto;
+      max-height: $loginFormMaxHeight;
+      width: 100%;
+      height: 100%;
+      background-color: $white;
+      color: black;
+      @include flex(flex-start, flex-start);
+   }
+
+   &__content {
+      width: 100%;
+      flex: 4;
+      padding: 1rem 2rem 4rem 4rem;
+      z-index: 1;
+
+      @include tablet {
+         padding: 5rem;
+      }
+
+      @include mobile {
+         padding: 2rem;
+      }
+
+      @include minScreen {
+         flex: 6;
+      }
+
+      &__top {
+         &__title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+         }
+
+         &__sub {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+         }
+      }
+
+      &__form {
+         width: 100%;
+         height: 100%;
+         display: flex;
+         flex-direction: column;
+
+         &>.MuiFormControl-root {
+            margin: 1rem 0;
+         }
+
+         &__action {
+            @include flex(center, space-between);
+
+            &__remember {
+               &>input {
+                  font-size: 1.5rem;
+               }
+            }
+
+            &__forgot {
+               font-size: 0.8rem;
+               font-weight: 500;
+               color: $loginPageBg;
+               cursor: pointer;
+
+               &:hover {
+                  opacity: 0.7;
+               }
+            }
+         }
+
+         &>button {
+            margin-top: 1rem;
+         }
+      }
+
+      &__form.register {
+         & .userInfo {
+
+            &>.MuiFormControl-root {
+               margin: 1rem 0;
+            }
+         }
+
+         & .userAccount {
+            &>.MuiFormControl-root {
+               margin: 1rem 0;
+            }
+
+            & .group__button {
+               display: grid;
+               grid-template-columns: repeat(2, 1fr);
+               grid-gap: 1rem;
+            }
+         }
+
+         & .step {
+            display: none;
+
+            &>button {
+               width: 100%;
+            }
+            &>button:disabled{
+               cursor: not-allowed !important;
+               pointer-events: visible;
+               background-color: #55acee;
+               color: #fff;
+            }
+         }
+
+         & .step.active {
+            display: block;
+         }
+      }
+
+      .or {
+         @include flex(center, center);
+         margin-top: 1rem;
+         width: 100%;
+         border-top: 1px solid $loginPageBg;
+
+         &>span {
+            position: relative;
+            top: -12px;
+            background-color: $white;
+            padding: 0 1rem;
+            font-size: 0.9rem;
+            color: $loginPageBg;
+         }
+      }
+
+      &__bottom {
+
+         &__social-btns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 1rem;
+
+            &>button {
+               padding: 0.5rem 0;
+               border: none;
+               border-radius: 4px;
+               font-size: 22px;
+
+               &>.icon {
+                  color: white !important;
+               }
+            }
+
+            .facebook {
+               background-color: #3b5998;
+            }
+
+            .twitter {
+               background-color: #55acee;
+            }
+
+            .linkedin {
+               background-color: #0077b5;
+            }
+         }
+
+         &__register {
+            @include flex(center, center);
+            margin-top: 2rem;
+            font-size: 0.9rem;
+
+            @include minScreen {
+               flex-direction: column;
+            }
+
+            &__link {
+               font-size: 0.8rem;
+               font-weight: 500;
+               color: $loginPageBg;
+               cursor: pointer;
+               margin-left: 5px;
+
+               &:hover {
+                  opacity: 0.7;
+               }
+            }
+         }
+      }
+   }
+
+   &__background-img {
+      width: 100vw;
+      position: relative;
+      height: $loginFormMaxHeight;
+      flex: 7;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      @include tablet {
+         display: none;
+      }
+   }
+}
+
+// ----------------------------------------End Style page login------------------------------------------------------
