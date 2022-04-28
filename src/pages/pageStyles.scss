@@ -4,7 +4,7 @@
 .auth {
    background-color: $loginPageBg;
    width: auto;
-   min-height: 100vh;
+   height: auto;
    padding: 0rem 5rem;
 
    @include tablet {
@@ -85,6 +85,10 @@
             }
          }
 
+         & .alert_login{
+            margin: 1rem 0 1rem 0;
+         }
+
          &>button {
             margin-top: 1rem;
          }
@@ -116,7 +120,8 @@
             &>button {
                width: 100%;
             }
-            &>button:disabled{
+
+            &>button:disabled {
                cursor: not-allowed !important;
                pointer-events: visible;
                background-color: #55acee;
@@ -160,14 +165,17 @@
 
                &>.icon {
                   color: white !important;
+
                }
             }
 
             .facebook {
+               cursor: pointer;
                background-color: #3b5998;
             }
 
-            .twitter {
+            .google {
+               cursor: pointer;
                background-color: #55acee;
             }
 

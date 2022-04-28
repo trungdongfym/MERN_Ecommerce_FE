@@ -5,14 +5,15 @@ import { FastField, Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
 import { Link, Navigate } from 'react-router-dom';
-import { InputOutline, InputPassword, Page } from '../../components/base';
+import { InputOutline, InputPassword, Page, Spinner } from '../../components/base';
 import { commonLink } from '../../helpers/linkConstants';
 import '../pageStyles.scss';
 import './customerStyles.scss';
 import { registerSchema } from '../../validates/userSchema';
 import { registerUserApi } from '../../apis/userApi';
 import { loginUserAction } from '../../redux/actions/userActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { isLogingSelector, userSelector } from '../../redux/selectors';
 
 const Register = () => {
 
@@ -24,6 +25,11 @@ const Register = () => {
       message: ''
    });
 
+   const [loginNowErrors, setLoginNowErrors] = useState(null);
+   const isLogoingNow = useSelector(isLogingSelector);
+   // If loginnow success then userLoginNow != null
+   const userLoginNow = useSelector(userSelector);
+
    const dispatch = useDispatch();
 
    useEffect(() => {
@@ -31,8 +37,7 @@ const Register = () => {
       const arrayStep = Array(lengthStep);
       arrayStep.fill(0);
       if (lengthStep > 0) arrayStep[0] = 1;
-      // setStep(arrayStep);
-      setStep([1, 1, 1]);
+      setStep(arrayStep);
    }, []);
 
    useEffect(() => {
@@ -58,7 +63,6 @@ const Register = () => {
    const handleNextStep = (e) => {
       let flag = 0;
       // Move 1 to the next element
-      console.log(step);
       const steps = step.map((val) => {
          if (flag === 1) {
             flag = 0;
@@ -67,7 +71,6 @@ const Register = () => {
          if (val === 1) flag = 1;
          return 0;
       });
-      console.log(steps);
       setStep(steps);
    }
 
@@ -85,16 +88,15 @@ const Register = () => {
       setStep(steps);
    }
 
-   const handleLoginNow = () => {
+   const handleLoginNow = async () => {
       try {
          const userLogin = userRegisterStatus.userRegisted;
          const cloneUserLogin = structuredClone(userLogin);
          const { email, methodLogin, password } = cloneUserLogin;
-         const userLoginPayload = { email, methodLogin, password };
-         console.log(userLoginPayload);
-         dispatch(loginUserAction(userLoginPayload));
+         const userLoginPayload = { email, methodLogin, password, rememberMe: false };
+         await dispatch(loginUserAction(userLoginPayload));
       } catch (error) {
-
+         setLoginNowErrors(error.message);
       }
    }
 
@@ -106,12 +108,13 @@ const Register = () => {
       try {
          const userRegister = await registerUserApi(userData);
          if (userRegister) {
+            // Set account registered into state
             setUserRegisterStatus({
                userRegisted: userData,
                error: false,
                message: 'Đăng ký thành công!'
             });
-            // handleNextStep();
+            handleNextStep();
          } else {
             setUserRegisterStatus({
                userRegisted: null,
@@ -128,163 +131,173 @@ const Register = () => {
       }
    };
 
-   if (false) {
+   if (isLogoingNow) {
       return (
-         <Box className='spinner'>
-            <CircularProgress />
-         </Box>
+         <Spinner />
       );
-   } else if (false) {
-      return <Navigate to='/' />;
+   } else if (userLoginNow) {
+      return <Navigate to='/' replace={true} />;
    } else
       return (
-         <Page title='Register' className='auth__content'>
-            <div className='auth__content__top'>
-               <div className='auth__content__top__title'>
-                  Đăng ký
+         <>
+            <Page title='Đăng ký' className='auth__content'>
+               <div className='auth__content__top'>
+                  <div className='auth__content__top__title'>
+                     Đăng ký
+                  </div>
+                  <div className='auth__content__top__sub'>
+                     Nhập thông tin tài khoản của bạn, hãy bảo mật những thông tin này
+                  </div>
                </div>
-               <div className='auth__content__top__sub'>
-                  Nhập thông tin tài khoản của bạn, hãy bảo mật những thông tin này
-               </div>
-            </div>
-            <Formik
-               initialValues={initalValues}
-               validationSchema={registerSchema}
-               onSubmit={
-                  async (values, { setSubmitting }) => {
-                     setSubmitting(true);
-                     await handleSubmitForm(values);
-                     setSubmitting(false);
+               <Formik
+                  initialValues={initalValues}
+                  validationSchema={registerSchema}
+                  onSubmit={
+                     async (values, { setSubmitting }) => {
+                        setSubmitting(true);
+                        await handleSubmitForm(values);
+                        setSubmitting(false);
+                     }
                   }
-               }
-            >
-               {formikProps => {
-                  const { getFieldMeta, isSubmitting } = formikProps;
-                  const fieldMetaName = getFieldMeta('name');
-                  return (
-                     <Form className='auth__content__form register'>
-                        <div className='userInfo step'>
-                           <FastField
-                              component={InputOutline}
-                              label='Họ tên'
-                              name='name'
-                              placeholder='Your name here...'
-                           />
-                           <FastField
-                              component={InputOutline}
-                              label='Số điện thoại'
-                              name='phone'
-                              placeholder='Your phone here...'
-                           />
-                           <FastField
-                              component={InputOutline}
-                              label='Địa chỉ'
-                              name='address'
-                              placeholder='Your address here...'
-                           />
-                           <Button
-                              variant='contained'
-                              size='large'
-                              type='button'
-                              disabled={
-                                 fieldMetaName.error !== undefined || !fieldMetaName.touched
-                                    ? true : false
-                              }
-                              onClick={handleNextStep}
-                           >
-                              Tiếp tục
-                           </Button>
-                        </div>
-                        <div className='userAccount step'>
-                           <FastField
-                              component={InputOutline}
-                              label='Email'
-                              name='email'
-                              placeholder='Your email here...'
-                           />
-                           <Field
-                              component={InputPassword}
-                              label='Mật khẩu'
-                              name='password'
-                              placeholder='Your password here...'
-                              showPassword={showPassword}
-                              handleShowPassword={handleClickShowPassword}
-                           />
-                           <Field
-                              component={InputPassword}
-                              label='Xác nhận mật khẩu'
-                              name='confirmPassword'
-                              placeholder='Your confirm here...'
-                              showPassword={showPassword}
-                              handleShowPassword={handleClickShowPassword}
-                           />
-                           <div className='group__button'>
+               >
+                  {formikProps => {
+                     const { getFieldMeta, isSubmitting } = formikProps;
+                     const fieldMetaName = getFieldMeta('name');
+                     return (
+                        <Form className='auth__content__form register'>
+                           <div className='userInfo step'>
+                              <FastField
+                                 component={InputOutline}
+                                 label='Họ tên'
+                                 name='name'
+                                 placeholder='Your name here...'
+                              />
+                              <FastField
+                                 component={InputOutline}
+                                 label='Số điện thoại'
+                                 name='phone'
+                                 placeholder='Your phone here...'
+                              />
+                              <FastField
+                                 component={InputOutline}
+                                 label='Địa chỉ'
+                                 name='address'
+                                 placeholder='Your address here...'
+                              />
                               <Button
                                  variant='contained'
                                  size='large'
                                  type='button'
-                                 onClick={handlePreStep}
+                                 disabled={
+                                    fieldMetaName.error !== undefined || !fieldMetaName.touched
+                                       ? true : false
+                                 }
+                                 onClick={handleNextStep}
                               >
-                                 Quay lại
-                              </Button>
-                              <Button
-                                 variant='contained'
-                                 size='large'
-                                 type='submit'
-                                 disabled={isSubmitting}
-                              >
-                                 Đăng ký
-                                 {isSubmitting && (
-                                    <Box sx={{ display: 'flex' }}>
-                                       <CircularProgress
-                                          disableShrink size={15} color='error'
-                                          className='progressBar'
-                                       />
-                                    </Box>
-                                 )}
+                                 Tiếp tục
                               </Button>
                            </div>
-                           {userRegisterStatus.error &&
-                              (<div className='alert_register'>
-                                 <Alert severity="error">{userRegisterStatus.message}</Alert>
-                              </div>)
-                           }
-                        </div>
-                        <div className='registerSuccess step'>
-                           <Alert className='alert' severity="success">{userRegisterStatus.message}</Alert>
-                           <div className='emailRegisted'>{userRegisterStatus.userRegisted?.email}</div>
-                           <div className='note'>Hãy bảo mật tài khoản của bạn</div>
-                           <Button className='loginNow' onClick={handleLoginNow}>Đăng nhập ngay</Button>
-                        </div>
-                     </Form>
-                  );
-               }}
-            </Formik>
-            <div className='or'>
-               <span>OR</span>
-            </div>
-            <div className='auth__content__bottom'>
-               <div className='auth__content__bottom__social-btns'>
-                  <button className='facebook'>
-                     <FaFacebook className="icon" />
-                  </button>
-                  <button className='twitter'>
-                     <FaGoogle className="icon" />
-                  </button>
+                           <div className='userAccount step'>
+                              <FastField
+                                 component={InputOutline}
+                                 label='Email'
+                                 name='email'
+                                 placeholder='Your email here...'
+                              />
+                              <Field
+                                 component={InputPassword}
+                                 label='Mật khẩu'
+                                 name='password'
+                                 placeholder='Your password here...'
+                                 showPassword={showPassword}
+                                 handleShowPassword={handleClickShowPassword}
+                              />
+                              <Field
+                                 component={InputPassword}
+                                 label='Xác nhận mật khẩu'
+                                 name='confirmPassword'
+                                 placeholder='Your confirm here...'
+                                 showPassword={showPassword}
+                                 handleShowPassword={handleClickShowPassword}
+                              />
+                              <div className='group__button'>
+                                 <Button
+                                    variant='contained'
+                                    size='large'
+                                    type='button'
+                                    onClick={handlePreStep}
+                                 >
+                                    Quay lại
+                                 </Button>
+                                 <Button
+                                    variant='contained'
+                                    size='large'
+                                    type='submit'
+                                    disabled={isSubmitting}
+                                 >
+                                    Đăng ký
+                                    {isSubmitting && (
+                                       <Box sx={{ display: 'flex' }}>
+                                          <CircularProgress
+                                             disableShrink size={15} color='error'
+                                             className='progressBar'
+                                          />
+                                       </Box>
+                                    )}
+                                 </Button>
+                              </div>
+                              {userRegisterStatus.error &&
+                                 (<div className='alert_register'>
+                                    <Alert severity="error">{userRegisterStatus.message}</Alert>
+                                 </div>)
+                              }
+                           </div>
+                           <div className='registerSuccess step'>
+                              <Alert className='alert' severity="success">{userRegisterStatus.message}</Alert>
+                              <div className='emailRegisted'>{userRegisterStatus.userRegisted?.email}</div>
+                              <div className='note'>Hãy bảo mật tài khoản của bạn</div>
+                              <Button className='loginNow' onClick={handleLoginNow}>Đăng nhập ngay</Button>
+                              {loginNowErrors &&
+                                 (<div className='alert_register'>
+                                    <Alert severity="error">{loginNowErrors}</Alert>
+                                 </div>)
+                              }
+                           </div>
+                        </Form>
+                     );
+                  }}
+               </Formik>
+               <div className='or'>
+                  <span>OR</span>
                </div>
-               <div className='auth__content__bottom__register'>
-                  <div className='login__content__bottom__register__text'>
-                     Bạn đã có tài khoản?
+               <div className='auth__content__bottom'>
+                  <div className='auth__content__bottom__social-btns'>
+                     <button className='facebook'>
+                        <FaFacebook className="icon" />
+                     </button>
+                     <button className='google'>
+                        <FaGoogle className="icon" />
+                     </button>
                   </div>
-                  <Link
-                     to={commonLink.loginLink}
-                     className='auth__content__bottom__register__link'
-                  >
-                     Trở lại đăng nhập
-                  </Link>
+                  <div className='auth__content__bottom__register'>
+                     <div className='login__content__bottom__register__text'>
+                        Bạn đã có tài khoản?
+                     </div>
+                     <Link
+                        to={commonLink.loginLink}
+                        className='auth__content__bottom__register__link'
+                     >
+                        Trở lại đăng nhập
+                     </Link>
+                  </div>
                </div>
+            </Page>
+            <div
+               className='auth__background-img'
+               style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/static/login_bg_img.png)` }}
+            >
             </div>
-         </Page>
+         </>
       );
 };
 

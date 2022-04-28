@@ -1,37 +1,35 @@
-@use '../../styles/abstracts/' as *;
+@use '../../styles/abstracts/'as *;
 
-.auth__content__form.register{
-   .progressBar{
+.auth__content__form.register {
+   .progressBar {
       color: #fff;
       margin-left: 5px;
    }
 
-   & .userAccount{
-      & .alert_register{
-         margin-top: 1rem;
-      }
+   & .alert_register {
+      margin-top: 1rem;
    }
 
-   & .registerSuccess{
+   & .registerSuccess {
       margin: 2rem 0 2rem 0;
-      
-      & .alert{
+
+      & .alert {
          font-size: 16px;
          align-items: center;
          font-weight: 550;
       }
 
-      & .emailRegisted{
+      & .emailRegisted {
          text-align: start;
          margin: 1rem 0 1rem 0;
          font-weight: 500;
       }
 
-      & .note{
+      & .note {
          @extend .emailRegisted;
       }
-      
-      & .loginNow{
+
+      & .loginNow {
          background-color: $oceanColor;
          color: #fff;
          margin-top: 1.5rem;

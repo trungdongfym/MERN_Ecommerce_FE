@@ -11,11 +11,6 @@ export default function LogoOnly() {
          <div className='auth'>
             <div className='auth__wrapper'>
                <Outlet />
-               <div
-                  className='auth__background-img'
-                  style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/static/login_bg_img.png)` }}
-               >
-               </div>
             </div>
          </div>
       </>

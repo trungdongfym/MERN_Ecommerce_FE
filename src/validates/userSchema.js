@@ -3,7 +3,9 @@ import { regexPassword } from '../helpers/regexPatern';
 
 const loginSchema = yup.object().shape({
    email: yup.string().email('Email không hợp lệ!').required('Email không được bỏ trống!'),
-   password: yup.string().required('Mật khẩu không được bỏ trống!')
+   password: yup.string().required('Mật khẩu không được bỏ trống!'),
+   rememberMe: yup.boolean().typeError('Remember phải là kiểu boolean!').required(),
+   methodLogin: yup.string().required('Phải có phương thức đăng nhập!')
 });
 
 const registerSchema = yup.object().shape({

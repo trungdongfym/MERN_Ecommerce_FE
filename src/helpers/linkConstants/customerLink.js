@@ -1,1 +1,1 @@
-export const registerLink = '/register';
+export const registerLink = '/user/register';

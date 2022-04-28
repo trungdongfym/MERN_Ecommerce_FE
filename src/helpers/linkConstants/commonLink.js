@@ -1,1 +1,1 @@
-export const loginLink = '/login'
+export const loginLink = '/user/login'
