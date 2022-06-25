@@ -28,26 +28,33 @@ axiosClient.interceptors.request.use(async (config) => {
    }
    // If accessToken expired
    if (!accessToken) {
-      refeshTokenApi = refeshTokenApi ? refeshTokenApi : RefreshTokenApi;
+      try {
+         refeshTokenApi = refeshTokenApi ? refeshTokenApi : RefreshTokenApi;
 
-      const refreshToken = cookie.get('refreshToken');
-      if (!refreshToken) {
+         const refreshToken = cookie.get('refreshToken');
+         if (!refreshToken) {
+            window.location.reload();
+            return;
+         }
+         const accessTokenPayload = await refeshTokenApi(refreshToken);
+         // console.log(accessTokenPayload);
+         // Save accessToken to cookie
+         const { expiresIn: accExpiresIn, token: newAccessToken } = accessTokenPayload;
+         cookie.set('accessToken', newAccessToken, {
+            maxAge: accExpiresIn - 5,
+            sameSite: 'strict',
+            path: '/'
+         });
+         accessToken = newAccessToken;
+         refeshTokenApi = null;
+      } catch (error) {
+         localStorage.clear();
+         cookie.remove('refreshToken');
          window.location.reload();
-         return;
       }
-      const accessTokenPayload = await refeshTokenApi(refreshToken);
-      // Save accessToken to cookie
-      const { expiresIn: accExpiresIn, token: newAccessToken } = accessTokenPayload;
-      cookie.set('accessToken', newAccessToken, {
-         maxAge: accExpiresIn - 5,
-         sameSite: 'strict',
-         path: '/'
-      });
-      accessToken = newAccessToken;
-      refeshTokenApi = null;
    }
    accessToken = 'Bearer ' + accessToken;
-   config.headers['authoriztion'] = accessToken;
+   config.headers['authorization'] = accessToken;
    return config;
 }, (err) => {
    return new Promise.reject(err);

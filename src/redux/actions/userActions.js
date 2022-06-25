@@ -1,6 +1,8 @@
 import { ADD_USER, DELETE_USER, UPDATE_USER } from '../constants';
-import { loginUserApi } from '../../apis/userApi';
+import { loginUserApi, logoutUserApi } from '../../apis/userApi';
+import { methodLoginEnum } from '../../helpers/constants/userConst';
 import Cookies from 'universal-cookie';
+import { firebaseAuth } from '../../firebase/firebase';
 
 const addUserAction = (payload) => {
    return {
@@ -28,12 +30,9 @@ const loginUserAction = userLoginPayload => async (dispatch) => {
       dispatch(updateUserAction({ isLoging: true }));
       const responsePayload = await loginUserApi(userLoginPayload);
 
-      console.log(responsePayload);
-
       if (!responsePayload || responsePayload && !responsePayload.status) {
          throw new Error(responsePayload?.errors?.message || 'Đăng nhập thất bại!');
       }
-
       // Get payload of dataformat
       const { payload: userAccessData } = responsePayload;
       const { user, accessToken, refreshToken } = userAccessData;
@@ -68,8 +67,7 @@ const loginUserAction = userLoginPayload => async (dispatch) => {
       // Save accesstoken to cookie
       cookie.set('accessToken', accToken, optionsCookieAccess);
       cookie.set('refreshToken', refToken, optionsCookieRefresh);
-      // Save user to store and localStorage
-      localStorage.setItem('user', JSON.stringify(user));
+
       dispatch(addUserAction({ user, isLoging: false }));
    } catch (error) {
       dispatch(deleteUserAction());
@@ -77,10 +75,26 @@ const loginUserAction = userLoginPayload => async (dispatch) => {
    }
 }
 
+const logoutUserAction = userActive => async (dispatch) => {
+   try {
+      const userLogoutRes = await logoutUserApi(userActive);
+      if (userLogoutRes.payload === true) {
+         dispatch(deleteUserAction());
+         
+         new Cookies().remove('refreshToken');
+         if (userActive.methodLogin !== methodLoginEnum.normal) {
+            await firebaseAuth.signOut();
+         }
+      }
+   } catch (error) {
+      throw error;
+   }
+}
 
 export {
    addUserAction,
    deleteUserAction,
    updateUserAction,
-   loginUserAction
+   loginUserAction,
+   logoutUserAction
 }

@@ -3,53 +3,23 @@ import {
    Box, Button, Checkbox, CircularProgress, FormControlLabel
 } from '@mui/material';
 import { FastField, Field, Form, Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
-import { Link, Navigate } from 'react-router-dom';
-import { InputOutline, InputPassword, Page, Spinner } from "../components/base";
-import { customerLink } from '../helpers/linkConstants';
-import { loginSchema } from "../validates/userSchema";
-import { useLocation } from 'react-router-dom';
-import { loginUserAction } from '../redux/actions/userActions';
-import { userSelector, isLogingSelector } from '../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useLocation } from 'react-router-dom';
+import { InputOutline, InputPassword, Page } from "../components/base";
+import { loginWithThirdParty } from '../firebase/firebaseAuth';
+import { methodLoginEnum } from '../helpers/constants/userConst';
+import { customerLink } from '../helpers/linkConstants';
+import { loginUserAction } from '../redux/actions/userActions';
+import { userSelector } from '../redux/selectors';
+import { loginSchema } from "../validates/userSchema";
 import './pageStyles.scss';
-import { firebaseAuth } from '../firebase/firebase';
-import {
-   GoogleAuthProvider, signInWithPopup,
-   getAdditionalUserInfo, FacebookAuthProvider
-} from 'firebase/auth';
-
-function createDataLoginFirebasw(credentialUser, userInfo, methodLogin) {
-   const {
-      user: { uid, displayName, email, phoneNumber, photoURL, stsTokenManager: { accessToken, refreshToken } }
-   } = credentialUser;
-   const { isNewUser } = userInfo;
-   const userPayload = {
-      user: {
-         uid: uid,
-         name: displayName,
-         email: email,
-         phone: phoneNumber || '',
-         avatar: photoURL,
-      },
-      token: {
-         accessToken,
-         refreshToken
-      },
-      isNewUser,
-      rememberMe: false,
-      methodLogin: methodLogin
-   }
-   return userPayload;
-}
-
 
 export default function LoginPage() {
    // Email and password state
    const [showPassword, setShowPassword] = useState(false);
    const [loginStatus, setLoginStatus] = useState({ error: null, message: '' });
-
    const userLogin = useSelector(userSelector);
    const dispatch = useDispatch();
    // const [userCredential, setUserCredential] = useState(null);
@@ -78,25 +48,31 @@ export default function LoginPage() {
    // Listener user login with google or facebook
 
    const handleLoginWithGoogle = async () => {
-      const googleProvider = new GoogleAuthProvider();
       try {
-         const credentialUser = await signInWithPopup(firebaseAuth, googleProvider);
-         const userInfo = getAdditionalUserInfo(credentialUser);
-         const userPayload = createDataLoginFirebasw(credentialUser, userInfo, 'google');
+         const userPayload = await loginWithThirdParty(methodLoginEnum.google);
          await dispatch(loginUserAction(userPayload));
       } catch (error) {
+         if (error?.name === "FirebaseError") {
+            const message = 'Có thể bạn đã đăng nhập bằng một tài khoản có trùng email'
+               + ' vui lòng dùng tài khoản có email đăng nhập trước đó!';
+            setLoginStatus({ error: true, message: message })
+            return;
+         }
          setLoginStatus({ error: true, message: error.message });
       }
    }
 
    const handleLoginWithFacebook = async () => {
-      const facebookProvider = new FacebookAuthProvider();
       try {
-         const credentialUser = await signInWithPopup(firebaseAuth, facebookProvider);
-         const userInfo = getAdditionalUserInfo(credentialUser);
-         const userPayload = createDataLoginFirebasw(credentialUser, userInfo, 'facebook');
+         const userPayload = await loginWithThirdParty(methodLoginEnum.facebook);
          await dispatch(loginUserAction(userPayload));
       } catch (error) {
+         if (error?.name === "FirebaseError") {
+            const message = 'Có thể bạn đã đăng nhập bằng một tài khoản có trùng email'
+               + ' vui lòng dùng tài khoản có email đăng nhập trước đó!';
+            setLoginStatus({ error: true, message: message });
+            return;
+         }
          setLoginStatus({ error: true, message: error.message });
       }
    }
