@@ -1,7 +1,6 @@
 import * as yup from 'yup';
-import { regexPassword } from '../helpers/regexPatern';
+import { regexNoSpace, regexPassword } from '../helpers/regexPatern';
 import { methodLoginEnum } from '../helpers/constants/userConst';
-import { async } from '@firebase/util';
 import { checkEmailApi } from '../apis/userApi';
 import getUserActived from '../helpers/getUserActived';
 
@@ -73,8 +72,8 @@ const updateUserSchema = yup.object().shape({
    address: yup.string().typeError('Địa chỉ không hợp lệ!').notRequired(),
    phone: yup.string().typeError('Số điện thoại không hợp lệ!').notRequired(),
    gender: yup.string().notRequired(),
-   dateOfBirth: yup.date().notRequired(),
-   avatar: yup.mixed().test('avatar','File không hợp lệ!',(file)=>{
+   dateOfBirth: yup.date().nullable(true).notRequired(),
+   avatar: yup.mixed().test('avatar','File không hợp lệ!', (file) => {
       if(typeof file ==='string') return true;
       if(file){
          const fileType = file.type;
@@ -83,12 +82,28 @@ const updateUserSchema = yup.object().shape({
             return true;
          else return false;
       }
+      return true;
    })
-})
+});
+
+const changePassordSchema = yup.object().shape({
+   oldPassword:yup.string()
+      .required('Chưa nhập mật khẩu cũ!')
+      .matches(regexNoSpace,'Mật khẩu không được phép có khoảng trống!'),
+   newPassword:yup.string().required('Chưa nhập mật khẩu mới!!')
+      .matches(regexPassword, 'Mật khẩu phải lớn hơn 5 ký tự, chứa it nhất một chữ hoa và một ký tự đặc biệt!')
+      .matches(regexNoSpace,'Mật khẩu không được phép có khoảng trống!')
+      .notOneOf([yup.ref('oldPassword')],'Mật khẩu mới phải khác mật khẩu cũ!'),
+   confirmNewPassword:yup.string()
+      .required('Chưa xác nhận khẩu mới!!')
+      .matches(regexNoSpace,'Mật khẩu không được phép có khoảng trống!')
+      .oneOf([yup.ref('newPassword')],'Mật khẩu cũ và mới phải giống nhau!'),
+});
 
 export {
    loginSchema,
    registerSchema,
    loginWithThirdPartySchema,
-   updateUserSchema
+   updateUserSchema,
+   changePassordSchema
 }

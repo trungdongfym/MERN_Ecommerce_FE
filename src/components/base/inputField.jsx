@@ -1,7 +1,8 @@
 import { PhotoCamera, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
    FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, InputAdornment, InputLabel,
-   OutlinedInput, Radio, RadioGroup, TextField
+   MenuItem,
+   OutlinedInput, Radio, RadioGroup, Select, TextareaAutosize, TextField
 } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -73,24 +74,26 @@ export function InputPassword({ children, ...fieldProps }) {
 }
 
 export function FormNormal({children, ...fieldProps}){
-   const {label = '', form, field, placeholder, autoComplete} = fieldProps;
-   const { errors, touched } = form;
-   const { name } = field;
+   const {label = '', form, field, placeholder, autoComplete, type, ...other} = fieldProps;
+   const { errors, touched } = form || {};
+   const { name } = field || {};
    const isShowError = errors && errors[name] && touched && touched[name];
    return(
       <FormControl sx={{width:'100%'}}>
          <div className="fieldWapper">
-            <FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>
+            {label && <FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>}
             <OutlinedInput
                className="formCustom"
                error={isShowError ? true : false}
                {...field}
+               type={type}
+               {...other}
                placeholder={placeholder}
                autoComplete={autoComplete}
             />
          </div>
          {isShowError && 
-            <FormHelperText sx={{color:'red', marginLeft:'120px'}}>
+            <FormHelperText sx={{color:'red', marginLeft:'120px'}} className='textError'>
                {errors[name]}
             </FormHelperText>
          }
@@ -103,7 +106,7 @@ export function RadioButtonGroup(props){
    return(
       <FormControl fullWidth sx={{ m: 1 }}>
          <div className="fieldWapper">
-            <FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>
+            {label && (<FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>)}
             <RadioGroup
                row
                aria-labelledby="radioLabelId"
@@ -134,10 +137,10 @@ export function DateField(props){
       setValueChange(value);
    },[value]);
    return(
-      <FormControl>
+      <FormControl >
          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <div className="fieldWapper">
-               <FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>
+               {label && <FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>}
                <DatePicker
                   value={valueChange}
                   onChange={(newValue) => {
@@ -161,7 +164,7 @@ export function DateField(props){
 
 export function InputFileImage(props){
    const [file, setFile] = useState(null);
-   const {label, field, setFieldValue, setPreviewAvt = null} = props;
+   const {label, field, setFieldValue, setPreviewAvt = null, setFieldTouched} = props;
    const {name} = field;
 
    useEffect(()=>{
@@ -178,14 +181,15 @@ export function InputFileImage(props){
    },[file])
 
    const handleChangeFile = (e) => {
+      setFieldTouched(name, true);
       const fileIp = e.target.files[0];
       if(fileIp && (fileIp.type === 'image/png' || fileIp.type === 'image/jpeg')){
-         setFile(fileIp)
+         setFile(fileIp);
       }
    }
    return(
-      <label htmlFor="iconFileID">
-         <label htmlFor="iconFileID" style={{cursor:'pointer'}}>{label}</label>
+      <label htmlFor="iconFileID" onClick={() => {setFieldTouched(name,true);}}>
+         {label && <label htmlFor="iconFileID" style={{cursor:'pointer'}}>{label}</label>}
          <input 
             accept="image/*" 
             name={name} 
@@ -198,5 +202,47 @@ export function InputFileImage(props){
             <PhotoCamera />
          </IconButton>
       </label>
+   );
+}
+
+export function TextArea(props){
+   const { field, form, children ,...other } = props;
+   const { errors, touched } = form;
+   const { name } = field;
+   const isShowError = errors && errors[name] && touched && touched[name];
+   return(
+      <FormControl fullWidth sx={{ m: 1 }} style={{margin:'0'}}>
+         <textarea
+            {...field}
+            {...other}
+         />
+         {isShowError && 
+            <FormHelperText sx={{color:'red', marginLeft:'120px'}} className='textError'>
+               {errors[name]}
+            </FormHelperText>
+         }
+      </FormControl>
+   )
+}
+
+export function InputSelect({children, ...props}){
+   const { label, field, optionsList, defaultValue } = props;
+   return(
+      <FormControl fullWidth>
+         {label && <InputLabel id="selctLabel">{label}</InputLabel>}
+         <Select
+            labelId="selctLabel"
+            id="selctLabel"
+            label = {label}
+            {...field}
+            input = {<OutlinedInput/>}
+         >
+            {optionsList.map((item) => {
+               return(
+                  <MenuItem key={item.id} value={item.value}>{item.label}</MenuItem>
+               );
+            })}
+         </Select>
+      </FormControl>
    );
 }

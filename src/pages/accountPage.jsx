@@ -32,6 +32,19 @@ const genderArray = [
    }
 ]
 
+function generateUserInfo(userObject){
+   const {
+      email='',
+      name='',
+      phone='',
+      address='',
+      avatar='',
+      gender='',
+      dateOfBirth = null
+   } = userObject;
+   return {email, name, phone, address, avatar, gender, dateOfBirth};
+}
+
 export default function AccountPage(){
 
    const [previewAvt, setPreviewAvt] = useState(null);
@@ -41,44 +54,27 @@ export default function AccountPage(){
    const dispatch = useDispatch();
 
    let initialValue = useMemo(() => {
-      const userObject = {
-         email: '',
-         name:'',
-         phone:'',
-         address:'',
-         avatar:'',
-         gender:'',
-         dateOfBirth:''
-      };
+      const userObject = generateUserInfo({});
       if(!userInfo) return userObject;
       return userInfo;
-   }, [userInfo])
+   }, [userInfo]);
 
    useEffect(() => {
       async function getUser(){
-         const {_id:userID = null} = userActive;
+         const { _id:userID = null } = userActive || {};
          if(userID){
             try {
                const userRetrieved = await getUserApi(userID);
-               const {
-                  email='',
-                  name='',
-                  phone='',
-                  address='',
-                  avatar='',
-                  gender='',
-                  dateOfBirth=''
-               } = userRetrieved;
-               const userIf = { email, name, phone, address, avatar, gender, dateOfBirth };
+               const userIf = generateUserInfo(userRetrieved);
                // update form
                setUserInfo(userIf);
             } catch (error) {
-               
+               console.log(error);
             }
          }
       }
       getUser();
-   }, [userActive._id]);
+   }, [userActive]);
 
    const handleSubmit = async (values) => {
       if(values === initialValue) return;
@@ -97,7 +93,7 @@ export default function AccountPage(){
       userFd.append('phone',phone);
       userFd.append('address',address);
       userFd.append('gender',gender);
-      userFd.append('dateOfBirth',dateOfBirth);
+      userFd.append('dateOfBirth', dateOfBirth ? dateOfBirth:'');//send dateOfBirth or '' no send null
       userFd.append('_id',userActive._id);
       if(typeof avatar === 'object')
          userFd.append('avatar',avatar, avatar.name);
@@ -107,7 +103,7 @@ export default function AccountPage(){
             const userRetrieved = userUpdated.payload;
             const {name, email, avatar} = userRetrieved;
             // create user payload to update to redux store
-            const userPayload = {name, email, avatar};
+            const userPayload = { name, email, avatar };
             dispatch(updateUserAction(userPayload));
             setOpenModalNotify({open:true,type:'success',message:'Cập nhập thành công!'});
          } else {
@@ -148,7 +144,8 @@ export default function AccountPage(){
                }
             >
                {(formikProps)=>{
-                  const {values, setFieldValue, isSubmitting, errors} = formikProps;
+                  const {values, setFieldValue, isSubmitting, errors } = formikProps;
+                  // console.log(errors)
                   return(
                      <Form className='wrapperProfile__formContainer__form' autoComplete='off'>
                         <div className='wrapperProfile__formContainer__form__inputText'>
@@ -198,7 +195,9 @@ export default function AccountPage(){
                               />
                            </div>
                            <div className='btnContainer'>
-                              <button className='btnSubmit' type='submit' disabled={isSubmitting}>Cập nhập</button>
+                              <button className='btnSubmit' type='submit' disabled={isSubmitting}>
+                                 Cập nhập
+                              </button>
                            </div>
                         </div>
                         <div className='wrapperProfile__formContainer__form__inputFile'>

@@ -28,7 +28,6 @@ function createDataLoginFirebase(credentialUser, userInfo, methodLogin) {
 }
 
 const loginWithThirdParty = async (type) => {
-
    let provider = null;
    if (type === methodLoginEnum.google) provider = new GoogleAuthProvider();
    if (type === methodLoginEnum.facebook) provider = new FacebookAuthProvider();

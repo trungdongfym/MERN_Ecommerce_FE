@@ -1,0 +1,115 @@
+@use '../../../styles/abstracts/' as *;
+
+.sidebarAdmin::-webkit-scrollbar {
+   width: 8px;
+   height: 20px;
+   position: relative;
+   left: 10px;
+}
+.sidebarAdmin::-webkit-scrollbar-track {
+   border-radius: 8px;
+}
+
+.sidebarAdmin::-webkit-scrollbar-thumb {
+   background: rgba($color: gray, $alpha: 0.8); 
+   border-radius: 8px;
+}
+
+.sidebarAdmin{
+   background: linear-gradient(45deg, rgb(62, 44, 156), rgb(33, 125, 179));
+   position: fixed;
+   width: 200px;
+   height: calc(100vh - 53px);
+   top: 53.18px;
+   z-index: 10000;
+   &:hover{
+      overflow-y: overlay;
+   }
+   & .patitition{
+      border-bottom: 0.03rem solid #efefef;
+      opacity: 0.2;
+      margin: 0 auto;
+   }
+   &__adminInfo{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 10px;
+      user-select: none;
+      margin-right: 20px;
+
+      & .name{
+         margin-left: 10px;
+         color: #fff;
+         font-weight: 500;
+      }
+   }
+   &__wapperList{
+      &__list{
+         list-style: none;
+         &__listItem{
+            padding: 10px;
+
+            & .listItemWapper{
+               text-decoration: none;
+               color: #fff;
+               display: flex;
+               align-items: center;
+               opacity: 0.7;
+               transition: all .1s ease-in;
+               &.active{
+                  opacity: 1;
+               }
+               &:hover{
+                  opacity: 1;
+               }
+               & .title{
+                  margin-left: 15px;
+               }
+
+               & .icon{
+                  font-size: 18px;
+               }
+            }
+
+            & .parentList{
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               color: #fff;
+               cursor: pointer;
+               user-select: none;
+            }
+
+            & .sublist{
+               list-style: none;
+               max-height: 0;
+               overflow: hidden;
+               opacity: 0;
+               transition: all 0.2s ease;
+               &__sublistItem{
+                  &:first-child{
+                     padding-top: 10px;
+                  }
+                  padding: 6px 15px;
+               }
+            }
+            &.active {
+               & .sublist{
+                  transition: all 0.2s ease-in;
+                  max-height: 500px;
+                  opacity: 1;
+               }
+               & .parentList{
+                  & .listItemWapper{
+                     opacity: 1;
+                  }
+                  & .acctiveArrow{
+                     transform: rotate(90deg);
+                  }
+               }
+            }
+         }
+      }
+   }
+}

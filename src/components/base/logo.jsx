@@ -6,7 +6,7 @@ import './base.scss';
  * disableLink, styles
  */
 export default function Logo(props) {
-   const { disableLink, styles } = props;
+   const { path, styles, children, ...other } = props;
    const logo = (
       <div className="logo" style={styles}>
          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 512 512">
@@ -42,6 +42,18 @@ export default function Logo(props) {
          </svg>
       </div>
    );
-   if (disableLink) return <>{logo}</>
-   return <Link to='/'>{logo}</Link>
+   if (!path) {
+      return(
+         <div {...other}>
+            {logo}
+            {children}
+         </div>
+      );
+   } 
+   return (
+      <Link to={path} {...other}>
+         {logo}
+         {children}
+      </Link>
+   )
 }

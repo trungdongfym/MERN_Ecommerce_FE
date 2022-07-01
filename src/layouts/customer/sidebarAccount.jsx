@@ -1,7 +1,7 @@
 import { MdEdit } from 'react-icons/md';
 import { Avatar } from '@mui/material';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { sidebarAccountConfig } from './sidebarAccountConfig';
+import { sidebarAccountConfig } from './config/sidebarAccountConfig';
 import clsx from 'clsx';
 import { customerLink } from '../../helpers/linkConstants';
 

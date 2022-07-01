@@ -6,7 +6,7 @@ export default function LogoOnly() {
    return (
       <>
          <header className="logoOnly">
-            <Logo />
+            <Logo path={'/'} />
          </header>
          <div className='auth'>
             <div className='auth__wrapper'>

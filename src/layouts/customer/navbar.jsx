@@ -1,6 +1,6 @@
-import { navlistLeft, navlistRight } from "./navbarConfig";
+import { navlistLeft, navlistRight } from "./config/navbarConfig";
 import { Link } from 'react-router-dom';
-import './customerLayout.scss';
+import './styles/customerLayout.scss';
 import { Avatar } from "@mui/material";
 import { useEffect, useState } from "react";
 import clsx from 'clsx';
@@ -17,7 +17,7 @@ function ShowListItem({ listItem }) {
                <div className="listItem__title">{listItem.title}</div>
             </div>) :
             !listItem.pathAbs ?
-               (<Link className="item link" to={listItem.path}>
+               (<Link className="item link" to={listItem.path} >
                   <span className="listItem__icon">
                      {listItem.icon}
                   </span>

@@ -1,0 +1,104 @@
+@use '../../../styles/abstracts/index.scss' as *;
+
+.sidebarAccount {
+   &__wrapper {
+      padding: 15px;
+
+      &__userProfile {
+         display: flex;
+         align-items: center;
+
+         & .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            & .img {
+               width: 100%;
+               height: 100%;
+            }
+         }
+
+         & .name {
+            padding-left: 10px;
+
+            &>span {
+               color: #333;
+               font-size: 15px;
+               font-weight: 600;
+            }
+
+            & .editProfile {
+               display: flex;
+               align-items: center;
+               color: #888;
+               font-size: 14px;
+               font-weight: 600;
+               text-decoration: none;
+            }
+         }
+      }
+
+      &__list {
+         list-style: none;
+         margin-top: 30px;
+
+         & .listItem {
+            margin-bottom: 10px;
+
+            &__path {
+               display: flex;
+               color: #333;
+               font-size: 15px;
+               font-weight: 500;
+               text-decoration: none;
+
+               & .itemIcon {
+                  display: flex;
+                  align-items: center;
+                  color: $baseColorBlur;
+               }
+            }
+
+            &__path.active {
+               color: $baseColorBlur;
+            }
+
+            &__title {
+               padding-left: 5px;
+            }
+
+            & .sublist {
+               padding-left: 15px;
+               list-style: none;
+               max-height: 0;
+               overflow: hidden;
+               opacity: 0;
+               transition: all .4s ease-out;
+               & .subListItem {
+                  margin: 5px 0;
+               }
+            }
+            &.active {
+               & > .sublist {
+                  transition: all .4s ease-in;
+                  max-height: 1000px;
+                  opacity: 1;
+               }
+            }
+         }
+      }
+   }
+}
+
+.accountLayoutWapper{
+   background-color: #f5f5f5;
+   height: 100vh;
+   .userinfo{
+      display: flex;
+      width: 1200px;
+      padding-top: 15px;
+      margin: 0 auto;
+   }
+}

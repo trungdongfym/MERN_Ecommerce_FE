@@ -1,0 +1,158 @@
+@use '../../../styles/abstracts' as *;
+
+.navbarAdmin {
+   padding: 0.1rem 1.875rem;
+   display: flex;
+   position: fixed;
+   z-index: 10000;
+   width: 100vw;
+   &.admin{
+      background: linear-gradient(45deg, rgb(62, 44, 156), rgb(33, 125, 179));
+      & .navbar__logoWapper{
+         display: flex;
+         align-items: center;
+         & .roleText{
+            margin-left: 10px;
+            text-transform: uppercase;
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 1px;
+         }
+      }
+      & .navbar__wrapperList {
+         display: flex;
+         flex-grow: 1;
+
+         & .navbar_linklist {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            flex-grow: 1;
+            &.right{
+               justify-content: end;               
+            }
+
+            & .listItem {
+               margin: 0 1rem 0 0;
+
+               & .subList {
+                  display: flex;
+                  list-style: none;
+                  justify-content: space-evenly;
+               }
+
+               & .item {
+                  display: flex;
+                  align-items: center;
+               }
+
+               & .link {
+                  text-decoration: none;
+               }
+
+               & .box {
+                  cursor: pointer;
+               }
+
+               &__title {
+                  color: #fff;
+                  transition: all 0.2s ease-in-out;
+               }
+
+               &__title:hover {
+                  color: $lightBlueColor;
+               }
+
+               &__icon {
+                  display: flex;
+                  align-items: center;
+                  color: #fff;
+                  margin-right: 5px;
+               }
+            }
+
+            &__userActive {
+               position: relative;
+
+               &__userWrapper {
+                  display: flex;
+                  align-items: center;
+                  cursor: pointer;
+
+                  & .name {
+                     color: #fff;
+                     font-size: 14px;
+                     margin-left: 5px;
+                  }
+               }
+
+               &__acction {
+                  list-style: none;
+                  position: absolute;
+                  background-color: #fff;
+                  padding: 0rem 0.6rem;
+                  width: 170px;
+                  right: 0;
+                  top: 45px;
+                  box-shadow: 1px 0 5px 0px rgba($baseColorBlur, 0.5), 0 1px 5px 0px rgba($baseColorBlur, 0.5);
+                  border-radius: 2px;
+                  // display: none;
+                  transform-origin: 80px 0;
+                  transform: scale(0);
+                  transition: 0.15s all ease-out;
+                  z-index: 10000;
+
+                  &.active {
+                     display: block;
+                     transform: scale(1);
+                  }
+
+                  & .acctionUnit {
+                     margin: 10px 0;
+                     cursor: pointer;
+                     font-size: 14px;
+                     font-weight: 500;
+
+                     &.normal:hover {
+                        color: $lightBlueColor;
+                     }
+
+                     & .link {
+                        text-decoration: none;
+                        color: #333;
+                        transition: all 0.2s ease-in-out;
+
+                        &:hover {
+                           color: $lightBlueColor;
+                        }
+                     }
+                  }
+
+                  &::after {
+                     border-width: 15px;
+                     border-color: transparent transparent #fff transparent;
+                     border-style: solid;
+                     position: absolute;
+                     top: -30px;
+                     right: 33%;
+                     content: '';
+                  }
+               }
+            }
+         }
+
+         & .navbar_linklist.right {
+            & .subList {
+               & .listItem:last-child {
+                  padding: 0 0 0 1rem;
+                  border-left: 1px solid #fff;
+               }
+            }
+
+            & .listItem:last-child {
+               margin-right: 0 !important;
+            }
+         }
+      }
+   }
+}

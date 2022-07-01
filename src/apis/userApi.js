@@ -58,11 +58,21 @@ const checkEmailApi = async (email) => {
    }
 }
 
+const changePasswordApi = async (dataPassChange, userID) => {
+   try {
+      const response = await axiosClient.post(`/user/changePassword/${userID}`, dataPassChange);
+      return response;
+   } catch (error) {
+      throw error;
+   }
+}
+
 export {
    registerUserApi,
    loginUserApi,
    logoutUserApi,
    updateUserApi,
    getUserApi,
-   checkEmailApi
+   checkEmailApi,
+   changePasswordApi
 }

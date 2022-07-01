@@ -12,9 +12,9 @@ const style = {
 function ShowAlert({type, message}){
    if(type === 'error')
       return <Alert severity="error" sx={{fontWeight:500}}>{message}</Alert>
-   if(type === '')
+   if(type === 'warning')
       return <Alert severity="warning" sx={{fontWeight:500}}>{message}</Alert>
-   if(type === '')
+   if(type === 'info')
       return <Alert severity="info" sx={{fontWeight:500}}>{message}</Alert>
    return  <Alert severity="success" sx={{fontWeight:500}}>{message}</Alert>
 }
@@ -27,6 +27,7 @@ export default function ModalNotify(props){
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{zIndex:100000}}
       >
         <Box sx={style}>
             <ShowAlert type={type} message={message}/>

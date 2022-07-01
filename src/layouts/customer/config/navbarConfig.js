@@ -1,5 +1,5 @@
 import { FaFacebook, FaInstagram, FaRegQuestionCircle, FaBell } from 'react-icons/fa';
-import { commonLink, customerLink } from '../../helpers/linkConstants';
+import { commonLink, customerLink } from '../../../helpers/linkConstants';
 
 export const navlistLeft = [
    {

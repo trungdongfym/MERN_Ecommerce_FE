@@ -1,0 +1,175 @@
+@use '../../../../styles/abstracts/' as *;
+
+.container{
+   padding: 30px 40px;
+   & .icon{
+      font-size: 22px;
+      filter: brightness(0) invert(1);
+   }
+   & .title{
+      font-weight: 500;
+      color: #555;
+   }
+   & .tableContainer{
+      box-shadow:rgb(145 158 171 / 20%) 0px 3px 1px -2px, 
+            rgb(145 158 171 / 14%) 0px 2px 2px 0px, 
+            rgb(145 158 171 / 12%) 0px 1px 5px 0px;
+      &__toolbar{
+         display: flex;
+         justify-content: space-between;
+         padding: 20px 16px;
+      }
+   }
+}
+
+// --------------------------------------add products-------------------------------------------
+.addProductsWapper{
+   padding: 20px 40px;
+   &__title{
+      opacity: 0.8;
+   }
+   &__form{
+      margin-top: 40px;
+      width: 70%;
+      max-width: 70%;
+      display: flex;
+      &__wapperText{
+         flex-grow: 1;
+         &__field{
+            & .fieldProductsLabel{
+               display: block;
+               font-size: 1rem;
+               margin: 10px 0;
+            }
+            & .textError{
+               margin: 3px 0 0 0 !important;
+            }
+            & .textAreaCustom{
+               min-width: 100%;
+               max-width: 100%;
+               width: 100%;
+               font-size: 1rem;
+               font-weight: 400;
+               color: rgba(0, 0, 0, 0.87);
+               border-radius: 3px;
+               max-height: 100px;
+               min-height: 50px;
+               height: 50px;
+               padding: 8px 14px;
+               resize: vertical;
+               &:focus{
+                  outline: none;
+                  border: 1px solid ;
+               }
+            }
+            & .chooseField{
+               & input{
+                  -webkit-text-fill-color: #212121 !important;
+               }
+               &:hover{
+                  outline:1px solid rgba(0, 0, 0) !important;
+               }
+               & input:hover{
+                  cursor: pointer !important;
+               }
+            }
+         }
+      }
+
+      &__wapperFile{
+         display: flex;
+         & .imageWapper{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 40px;
+            padding: 0 40px;
+            &__error{
+               color: red;
+            }
+            &__avatar{
+               width: 100px;
+               height: 100px;
+            }
+            &__fileChoose{
+               display: flex;
+               justify-content: center;
+               padding-top: 10px;
+            }
+            &__note{
+               color: #999;
+               font-size: .825rem;
+               line-height: 1.25rem;
+               & p{
+                  margin: 0 0 5px 0;
+               }
+            }
+         }
+      }
+
+      &__btnGroup{
+         display: flex;
+         justify-content: space-evenly;
+         margin-top: 40px;
+         margin-bottom: 40px;
+         & .button{
+            padding: 10px 15px;
+            width: 155px;
+            border-radius: 5px;
+            border: none;
+            background-color: $baseColor;
+            color: #fff;
+            cursor: pointer;
+            &:hover{
+               background-color: rgba($baseColor,0.8);
+            }
+         }
+      }
+   }
+}
+// --------------------------------------end add products-------------------------------------------
+// ---------------------------add import order---------------------------------------
+.addImportOrderWapper{
+   & .addProductsWapper__form{
+      width: 60%;
+   }
+   &__formAddProducts{
+      width: 25%;
+      position: fixed;
+      top: 68px;
+      right: 45px;
+      z-index: 1000;
+      &__title{
+         font-weight: 500;
+         margin-bottom: 50px;
+         font-size: 20px;
+      }
+      &__tableProducts{
+         & .inputUpdateImport{
+            width: 80%;
+            border: none;
+            outline: none;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: 400;
+            &:hover{
+               outline: 1px solid #efefef;
+            }
+         }
+         & th{
+            padding: 10px 0 !important;
+         }
+         &__title{
+            font-size: 18px;
+         }
+         &__totalMoney{
+            font-size: 17px;
+            margin-top: 20px;
+            font-weight: 700;
+         }
+      }
+   }
+}
+// ---------------------------end add import order---------------------------------------

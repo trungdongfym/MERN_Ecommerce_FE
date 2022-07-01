@@ -1,0 +1,24 @@
+
+.moreMenu{
+   display: flex;
+   justify-content: flex-end;
+   &__delete{
+      color: red;
+   }
+   &__detail{
+      color: green;
+   }
+}
+
+.moreMenuTableImport{
+   display: flex;
+   justify-content: flex-end;
+   &__delete{
+      font-size: 18px;
+      color: red;
+   }
+   &__update{
+      font-size: 15px;
+      color: green;
+   }
+}

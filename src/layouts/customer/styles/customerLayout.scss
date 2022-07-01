@@ -1,4 +1,4 @@
-@use '../../styles/abstracts/'as *;
+@use '../../../styles/abstracts/' as *;
 
 //-----navbar-----
 .navbar {
@@ -84,6 +84,7 @@
                   transform-origin: 80px 0;
                   transform: scale(0);
                   transition: 0.15s all ease-out;
+                  z-index: 10000;
 
                   &.active {
                      display: block;

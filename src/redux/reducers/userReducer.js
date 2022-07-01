@@ -1,6 +1,7 @@
 import {
    ADD_USER,
    DELETE_USER,
+   LOGIN_USER,
    UPDATE_USER
 } from '../constants';
 
@@ -47,6 +48,11 @@ function userReducer(state = intialState, action) {
          return {
             ...state,
             user:userUpdate
+         }
+      case LOGIN_USER:
+         return {
+            ...state,
+            ...action.payload
          }
       default:
          return state;

@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { InputOutline, InputPassword, Page } from "../components/base";
 import { loginWithThirdParty } from '../firebase/firebaseAuth';
-import { methodLoginEnum } from '../helpers/constants/userConst';
+import { methodLoginEnum, roleEnum } from '../helpers/constants/userConst';
 import { customerLink } from '../helpers/linkConstants';
 import { loginUserAction } from '../redux/actions/userActions';
 import { userSelector } from '../redux/selectors';
 import { loginSchema } from "../validates/userSchema";
+import NotPermissionPage from './notPermissionPage';
 import './pageStyles.scss';
 
 export default function LoginPage() {
@@ -22,6 +23,7 @@ export default function LoginPage() {
    const [loginStatus, setLoginStatus] = useState({ error: null, message: '' });
    const userLogin = useSelector(userSelector);
    const dispatch = useDispatch();
+   const location = useLocation();
    // const [userCredential, setUserCredential] = useState(null);
 
    const intitalValues = {
@@ -30,8 +32,6 @@ export default function LoginPage() {
       rememberMe: false,
       methodLogin: 'normal'
    }
-
-   const location = useLocation();
 
    const handleClickShowPassword = (e) => {
       setShowPassword(prev => !prev);
@@ -79,7 +79,14 @@ export default function LoginPage() {
 
 
    if (userLogin) {
-      return <Navigate to={location?.state?.pathname || '/'} replace={true} />;
+      const {role} = userLogin;
+      if(role === roleEnum.Custommer)
+         return <Navigate to={location?.state?.pathname || '/'} replace={true} />;
+      if(role === roleEnum.Admin)
+         return <Navigate to={location?.state?.pathname || '/admin'} replace={true} />;
+      if(role === roleEnum.SaleStaff)
+         return <Navigate to={location?.state?.pathname || '/saleStaff'} replace={true} />;
+      return <NotPermissionPage />
    } else
       return (
          <>

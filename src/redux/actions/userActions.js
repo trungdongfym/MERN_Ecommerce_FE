@@ -1,4 +1,4 @@
-import { ADD_USER, DELETE_USER, UPDATE_USER } from '../constants';
+import { ADD_USER, DELETE_USER, LOGIN_USER, UPDATE_USER } from '../constants';
 import { loginUserApi, logoutUserApi } from '../../apis/userApi';
 import { methodLoginEnum } from '../../helpers/constants/userConst';
 import Cookies from 'universal-cookie';
@@ -25,9 +25,16 @@ const updateUserAction = (payload) => {
    }
 }
 
+const loginAction = (payload) => {
+   return {
+      type: LOGIN_USER,
+      payload: payload
+   }
+}
+
 const loginUserAction = userLoginPayload => async (dispatch) => {
    try {
-      dispatch(updateUserAction({ isLoging: true }));
+      dispatch(loginAction({ isLoging: true }));
       const responsePayload = await loginUserApi(userLoginPayload);
 
       if (!responsePayload || responsePayload && !responsePayload.status) {

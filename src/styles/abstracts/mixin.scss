@@ -23,3 +23,16 @@
         @content;
     }
 }
+
+@mixin baseButton {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    background-color: $baseColor;
+    color: #fff;
+    &:hover{
+        transition: opacity 0.2s ease;
+        background: rgba($color: $baseColor, $alpha: 0.8);
+    }
+}

@@ -263,16 +263,7 @@
                display: flex;
                justify-content: center;
                & .btnSubmit{
-                  padding: 10px 20px;
-                  cursor: pointer;
-                  border: none;
-                  border-radius: 3px;
-                  background-color: $baseColor;
-                  color: #fff;
-                  &:hover{
-                     transition: opacity 0.2s ease;
-                     background: rgba($color: $baseColor, $alpha: 0.8);
-                  }
+                  @include baseButton;
                }
             }
          }
@@ -306,4 +297,41 @@
       }
    }
 }
-// ---------------------------------------end style page account-----------------------------------
+// ---------------------------------------end style page account-----------------
+// -----------------------------styles change pass-------------------------------
+.wrapperChangePassword{
+   background-color: #fff;
+   width: 80%;
+   border-radius: 3px;
+   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 13%);
+   padding: 0 1.875rem 0.625rem;
+   &__form{
+      width: 60%;
+      &__field{
+         margin-bottom: 20px;
+         &:first-child{
+            margin-top: 20px;
+         }
+      }
+      & .btnContainer{
+         display: flex;
+         justify-content: center;
+         margin: 30px 0 100px 0;
+         & .btnSubmit{
+            @include baseButton;
+         }
+      }
+   }
+}
+// -----------------------------end styles change pass-------------------------------
+// -------------------------------------style page not permission--------------------------
+.permissionWapper{
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+   &__notify{
+
+   }
+}
+// -------------------------------------end style page not permission--------------------------
