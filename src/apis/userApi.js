@@ -67,6 +67,17 @@ const changePasswordApi = async (dataPassChange, userID) => {
    }
 }
 
+const getUsersApi = async (objectQuery) => {
+   try {
+      const users = await axiosClient.get('/user/getUsers',{
+         params:objectQuery
+      });
+      return users;
+   } catch (error) {
+      throw error;
+   }
+}
+
 export {
    registerUserApi,
    loginUserApi,
@@ -74,5 +85,6 @@ export {
    updateUserApi,
    getUserApi,
    checkEmailApi,
-   changePasswordApi
+   changePasswordApi,
+   getUsersApi
 }

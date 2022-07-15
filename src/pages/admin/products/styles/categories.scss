@@ -8,6 +8,7 @@
    &__form{
       margin-top: 40px;
       width: 60%;
+      display: flex;
       &__field{
          & .fieldCategoriesLabel{
             display: block;
@@ -25,10 +26,11 @@
             font-weight: 400;
             color: rgba(0, 0, 0, 0.87);
             border-radius: 3px;
-            max-height: 100px;
+            max-height: 200px;
             min-height: 50px;
             height: 50px;
             padding: 8px 14px;
+            resize: vertical;
             &:focus{
                outline: none;
                border: 1px solid ;
@@ -49,6 +51,37 @@
             cursor: pointer;
             &:hover{
                background-color: rgba($baseColor,0.8);
+            }
+         }
+      }
+      &__wapperFile{
+         display: flex;
+         & .imageWapper{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 40px;
+            padding: 0 40px;
+            &__error{
+               color: red;
+            }
+            &__avatar{
+               width: 100px;
+               height: 100px;
+            }
+            &__fileChoose{
+               display: flex;
+               justify-content: center;
+               padding-top: 10px;
+            }
+            &__note{
+               color: #999;
+               font-size: .825rem;
+               line-height: 1.25rem;
+               & p{
+                  margin: 0 0 5px 0;
+               }
             }
          }
       }

@@ -18,6 +18,20 @@
          display: flex;
          justify-content: space-between;
          padding: 20px 16px;
+         &__filter{
+            display: flex;
+            justify-content: space-evenly;
+            width: 500px;
+            &__title{
+               display: block;
+               flex: 1 0 60px;
+               font-weight: 600;
+            }
+            &__inputFilter{
+               width: 100%;
+               margin-left: 20px;
+            }
+         }
       }
    }
 }
@@ -40,6 +54,9 @@
                display: block;
                font-size: 1rem;
                margin: 10px 0;
+               &.bold{
+                  font-weight: 700;
+               }
             }
             & .textError{
                margin: 3px 0 0 0 !important;
@@ -52,7 +69,7 @@
                font-weight: 400;
                color: rgba(0, 0, 0, 0.87);
                border-radius: 3px;
-               max-height: 100px;
+               max-height: 200px;
                min-height: 50px;
                height: 50px;
                padding: 8px 14px;
@@ -124,6 +141,9 @@
             &:hover{
                background-color: rgba($baseColor,0.8);
             }
+            &:disabled{
+               cursor: not-allowed;
+            }
          }
       }
    }
@@ -173,3 +193,14 @@
    }
 }
 // ---------------------------end add import order---------------------------------------
+// ---------------------------update import product------------------------------------
+.updateImportProduct{
+   &__moreInfo{
+      margin: 20px 0;
+      font-weight: 500;
+      &__userImport{
+         margin: 30px 0;
+      }
+   }
+}
+// ---------------------------End update import product------------------------------------

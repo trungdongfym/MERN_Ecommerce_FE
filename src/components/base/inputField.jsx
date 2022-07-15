@@ -2,6 +2,7 @@ import { PhotoCamera, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
    FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, InputAdornment, InputLabel,
    MenuItem,
+   NativeSelect,
    OutlinedInput, Radio, RadioGroup, Select, TextareaAutosize, TextField
 } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -73,13 +74,13 @@ export function InputPassword({ children, ...fieldProps }) {
    );
 }
 
-export function FormNormal({children, ...fieldProps}){
-   const {label = '', form, field, placeholder, autoComplete, type, ...other} = fieldProps;
+export function FormNormal({ children, ...fieldProps }) {
+   const { label = '', form, field, placeholder, autoComplete, type, ...other } = fieldProps;
    const { errors, touched } = form || {};
    const { name } = field || {};
    const isShowError = errors && errors[name] && touched && touched[name];
-   return(
-      <FormControl sx={{width:'100%'}}>
+   return (
+      <FormControl sx={{ width: '100%' }}>
          <div className="fieldWapper">
             {label && <FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>}
             <OutlinedInput
@@ -92,8 +93,8 @@ export function FormNormal({children, ...fieldProps}){
                autoComplete={autoComplete}
             />
          </div>
-         {isShowError && 
-            <FormHelperText sx={{color:'red', marginLeft:'120px'}} className='textError'>
+         {isShowError &&
+            <FormHelperText sx={{ color: 'red', marginLeft: '120px' }} className='textError'>
                {errors[name]}
             </FormHelperText>
          }
@@ -101,9 +102,9 @@ export function FormNormal({children, ...fieldProps}){
    );
 }
 
-export function RadioButtonGroup(props){
+export function RadioButtonGroup(props) {
    const { radioList, field, label } = props;
-   return(
+   return (
       <FormControl fullWidth sx={{ m: 1 }}>
          <div className="fieldWapper">
             {label && (<FormLabel className="fieldWapper__label" id="radioLabelId">{label}</FormLabel>)}
@@ -111,15 +112,15 @@ export function RadioButtonGroup(props){
                row
                aria-labelledby="radioLabelId"
                {...field}
-               sx={{width:'100%'}}
+               sx={{ width: '100%' }}
             >
-               {radioList.map((radioEl)=>{
-                  return(
-                     <FormControlLabel 
-                        key={radioEl.id} 
-                        value={radioEl.value} 
-                        control={<Radio />} 
-                        label={radioEl.label} 
+               {radioList.map((radioEl) => {
+                  return (
+                     <FormControlLabel
+                        key={radioEl.id}
+                        value={radioEl.value}
+                        control={<Radio />}
+                        label={radioEl.label}
                      />
                   );
                })}
@@ -129,14 +130,14 @@ export function RadioButtonGroup(props){
    )
 }
 
-export function DateField(props){
+export function DateField(props) {
    const { field, setFieldValue, label } = props;
    const { name, value } = field;
    const [valueChange, setValueChange] = useState(null);
-   useEffect(()=>{
+   useEffect(() => {
       setValueChange(value);
-   },[value]);
-   return(
+   }, [value]);
+   return (
       <FormControl >
          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <div className="fieldWapper">
@@ -145,14 +146,14 @@ export function DateField(props){
                   value={valueChange}
                   onChange={(newValue) => {
                      const date = new Date(newValue);
-                     if(date instanceof Date && !isNaN(date))
-                        setFieldValue(name,date.toISOString());
+                     if (date instanceof Date && !isNaN(date))
+                        setFieldValue(name, date.toISOString());
                      setValueChange(newValue);
                   }
-               }
+                  }
                   renderInput={(params) => {
-                     return(
-                        <TextField className="formCustom" {...params} />   
+                     return (
+                        <TextField className="formCustom" {...params} />
                      )
                   }}
                />
@@ -162,15 +163,15 @@ export function DateField(props){
    );
 }
 
-export function InputFileImage(props){
+export function InputFileImage(props) {
    const [file, setFile] = useState(null);
-   const {label, field, setFieldValue, setPreviewAvt = null, setFieldTouched} = props;
-   const {name} = field;
+   const { label, field, setFieldValue, setPreviewAvt = null, setFieldTouched } = props;
+   const { name } = field;
 
-   useEffect(()=>{
-      if(!file) return;
+   useEffect(() => {
+      if (!file) return;
       let linkPre = null;
-      if(setPreviewAvt){
+      if (setPreviewAvt) {
          linkPre = URL.createObjectURL(file);
          setPreviewAvt(linkPre);
       }
@@ -178,24 +179,24 @@ export function InputFileImage(props){
       return () => {
          linkPre && URL.revokeObjectURL(linkPre);
       }
-   },[file])
+   }, [file]);
 
    const handleChangeFile = (e) => {
       setFieldTouched(name, true);
       const fileIp = e.target.files[0];
-      if(fileIp && (fileIp.type === 'image/png' || fileIp.type === 'image/jpeg')){
+      if (fileIp && (fileIp.type === 'image/png' || fileIp.type === 'image/jpeg')) {
          setFile(fileIp);
       }
    }
-   return(
-      <label htmlFor="iconFileID" onClick={() => {setFieldTouched(name,true);}}>
-         {label && <label htmlFor="iconFileID" style={{cursor:'pointer'}}>{label}</label>}
-         <input 
-            accept="image/*" 
-            name={name} 
-            style={{display:'none'}} 
-            id="iconFileID" 
-            type="file" 
+   return (
+      <label htmlFor="iconFileID" onClick={() => { setFieldTouched && setFieldTouched(name, true); }}>
+         {label && <label htmlFor="iconFileID" style={{ cursor: 'pointer' }}>{label}</label>}
+         <input
+            accept="image/*"
+            name={name}
+            style={{ display: 'none' }}
+            id="iconFileID"
+            type="file"
             onChange={handleChangeFile}
          />
          <IconButton color="primary" aria-label="upload picture" component="span">
@@ -205,19 +206,19 @@ export function InputFileImage(props){
    );
 }
 
-export function TextArea(props){
-   const { field, form, children ,...other } = props;
+export function TextArea(props) {
+   const { field, form, children, ...other } = props;
    const { errors, touched } = form;
    const { name } = field;
    const isShowError = errors && errors[name] && touched && touched[name];
-   return(
-      <FormControl fullWidth sx={{ m: 1 }} style={{margin:'0'}}>
+   return (
+      <FormControl fullWidth sx={{ m: 1 }} style={{ margin: '0' }}>
          <textarea
             {...field}
             {...other}
          />
-         {isShowError && 
-            <FormHelperText sx={{color:'red', marginLeft:'120px'}} className='textError'>
+         {isShowError &&
+            <FormHelperText sx={{ color: 'red', marginLeft: '120px' }} className='textError'>
                {errors[name]}
             </FormHelperText>
          }
@@ -225,24 +226,52 @@ export function TextArea(props){
    )
 }
 
-export function InputSelect({children, ...props}){
-   const { label, field, optionsList, defaultValue } = props;
-   return(
+export function InputSelect({ children, ...props }) {
+   const { label, field, optionsList, ...other } = props;
+   return (
       <FormControl fullWidth>
          {label && <InputLabel id="selctLabel">{label}</InputLabel>}
          <Select
             labelId="selctLabel"
             id="selctLabel"
-            label = {label}
+            label={label}
             {...field}
-            input = {<OutlinedInput/>}
+            {...other}
+            input={<OutlinedInput />}
          >
             {optionsList.map((item) => {
-               return(
+               return (
                   <MenuItem key={item.id} value={item.value}>{item.label}</MenuItem>
                );
             })}
          </Select>
+      </FormControl>
+   );
+}
+
+export default function NativeSelectCustom(props) {
+   const { label, field, optionsList } = props;
+   const { name } = field;
+   return (
+      <FormControl fullWidth>
+         {label && 
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+               {label}
+            </InputLabel>
+         }
+         <NativeSelect
+            inputProps={{
+               name: name,
+               id: 'uncontrolled-native',
+            }}
+            {...field}
+         >
+            {optionsList.map((item) => {
+               return (
+                  <option key={item.id} value={item.value}>{item.label}</option>
+               );
+            })}
+         </NativeSelect>
       </FormControl>
    );
 }

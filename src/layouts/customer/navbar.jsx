@@ -1,10 +1,28 @@
 import { navlistLeft, navlistRight } from "./config/navbarConfig";
 import { Link } from 'react-router-dom';
 import './styles/customerLayout.scss';
-import { Avatar } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 import { useEffect, useState } from "react";
 import clsx from 'clsx';
 import { customerLink } from "../../helpers/linkConstants";
+import { HiSearch } from 'react-icons/hi';
+import { CgShoppingCart } from 'react-icons/cg';
+import { Logo } from "../../components/base";
+import { FaShoppingBag } from "react-icons/fa";
+
+const listUserActions = [
+   {
+      id: 'profile',
+      title: 'Tài khoản của tôi',
+      path: customerLink.profileLink
+   },
+   {
+      id: 'logout',
+      title: 'Đăng xuất',
+      path: null,
+      event: null
+   }
+]
 
 function ShowListItem({ listItem }) {
    return (
@@ -34,22 +52,8 @@ function ShowListItem({ listItem }) {
    );
 }
 
-const listUserActions = [
-   {
-      id: 'profile',
-      title: 'Tài khoản của tôi',
-      path: customerLink.profileLink
-   },
-   {
-      id: 'logout',
-      title: 'Đăng xuất',
-      path: null,
-      event: null
-   }
-]
-
 export default function Navbar(props) {
-   const { user, handleLogout } = props;
+   const { user, cart, handleLogout } = props;
    const [showPopupUser, setShowPopupUser] = useState(false);
    useEffect(() => {
       function handleShowPopupUser(e) {
@@ -135,6 +139,48 @@ export default function Navbar(props) {
                   );
                })}
             </ul>
+         </div>
+         <div className="navbar__wapperTool">
+            <Logo
+               path='/'
+               defaultColor={{
+                  stopColorX: '#fff',
+                  stopColorY: '#fff'
+               }}
+               className="navbar__wapperTool__logo"
+            >
+               <h3 className="navbar__wapperTool__logo__title">SHOPMAN</h3>
+            </Logo>
+            <div className="navbar__wapperTool__wapperSearch">
+               <form
+                  role='search'
+                  autoComplete="off"
+                  className="navbar__wapperTool__wapperSearch__form"
+               >
+                  <input
+                     type="text"
+                     className="navbar__wapperTool__wapperSearch__form__input"
+                     placeholder="Tìm kiếm..."
+                  />
+                  <button type="submit" className="navbar__wapperTool__wapperSearch__form__button">
+                     <HiSearch />
+                  </button>
+               </form>
+            </div>
+            <div className="navbar__wapperTool__shop">
+               <Link className="navbar__wapperTool__shop__link" to={customerLink.shopLink}>
+                  <FaShoppingBag className="navbar__wapperTool__shop__link__icon" />
+                  <span className="navbar__wapperTool__shop__link__title">Vào shop</span>
+               </Link>
+            </div>
+            <div className="navbar__wapperTool__cart">
+               <Badge component={Link}
+                  to={customerLink.cartLink}
+                  badgeContent={cart?.length} className="badge" color="error"
+               >
+                  <CgShoppingCart className="logo" />
+               </Badge>
+            </div>
          </div>
       </header>
    );

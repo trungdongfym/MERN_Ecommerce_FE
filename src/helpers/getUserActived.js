@@ -7,7 +7,8 @@ function getUserActived() {
    const user = localStorage.getItem('user');
 
    if (!user || !refreshToken) {
-      localStorage.clear();
+      localStorage.removeItem('user');
+      cookie.remove('refreshToken');
       return null;
    }
    return JSON.parse(user);

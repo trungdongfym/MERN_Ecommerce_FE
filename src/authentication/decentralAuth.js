@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import NotPermissionPage from "../pages/notPermissionPage";
+import { Navigate } from "react-router-dom";
 import { userSelector } from "../redux/selectors";
 
 /**
@@ -13,7 +13,7 @@ export default function DecentralAuth({children, roleArray}){
    if(userActive){
       const { role } = userActive;
       if(roleArray.includes(role)) return children;
-      return <NotPermissionPage />
+      return <Navigate to= {'/'+role.toLowerCase()} replace/>
    }
    return children;
 }

@@ -1,0 +1,89 @@
+
+.productContainer{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   background-color: #fff;
+   padding: 15px;
+   border-radius: 3px;
+   height: 100%;
+   // border: 0.8px solid rgba($color: #888, $alpha: 0.2);
+   position: relative;
+   &__imageProduct{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 70%;
+      transition: all .2s cubic-bezier(.4,0,.6,1);
+      & img{
+         object-fit: contain;
+         object-position: center center;
+         width: 100%;
+         height: auto;
+         display: block;
+      }
+   }
+   &:hover{
+      & img{
+         transition: all .2s cubic-bezier(.4,0,.6,1);
+         transform: scale(1.1);
+      }
+   }
+   &__productInfo{
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      &__name{
+         margin-bottom: 15px;
+      }
+      &__price{
+         color: rgb(16, 16, 16);
+         font-weight: 500;
+         &.sale{
+            color: #555;
+            text-decoration: line-through;
+            font-weight: 400;
+         }
+      }
+   }
+   &__shopBadge{
+      background-color: rgba(255,212,36,.9);
+      transform: scale(1.4);
+      padding: 4px 2px;
+      font-weight: 400;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 3;
+      &__content{
+         display: flex;
+         flex-direction: column;
+         text-align: center;
+         position: relative;
+         font-weight: 400;
+         line-height: .8125rem;
+         color: #ee4d2d;
+         text-transform: uppercase;
+         font-size: .75rem;
+         & .text{
+            margin-bottom: 2px;
+            color: #fff;
+         }
+         &::after{
+            content: "";
+            width: 0;
+            height: 0;
+            left: -2px;
+            bottom: -13px;
+            position: absolute;
+            border-color: transparent rgba(255,212,36,.9);
+            border-style: solid;
+            border-width: 0 17px 9px;
+         }
+      }
+   }
+}

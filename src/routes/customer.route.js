@@ -5,6 +5,10 @@ import RequireAuth from "../authentication/requireAuth";
 import DecentralAuth from "../authentication/decentralAuth";
 import {roleEnum} from '../helpers/constants/userConst';
 import ChangePasswordPage from "../pages/changePasswordPage";
+import HomePage from "../pages/customers/homePage";
+import { customerLink } from "../helpers/linkConstants";
+import DetailProductPage from "../pages/customers/detailProductPage";
+import CartPage from "../pages/customers/cartPage";
 
 export const customerRoute = {
    path: '/',
@@ -15,16 +19,28 @@ export const customerRoute = {
    ,
    children: [
       {
-         path: 'userinfo',
+         path: customerLink.userinfo,
          element: 
             <RequireAuth>
                <AccountLayout />
             </RequireAuth>,
          children: [
-            {path: 'account/profile', element: <AccountPage/>},
-            {path: 'account/password', element: <ChangePasswordPage/>},
+            {path: [customerLink.userAccount, customerLink.profile].join('/'), element: <AccountPage/>},
+            {path: [customerLink.userAccount, customerLink.password].join('/'), element: <ChangePasswordPage/>},
             {path: 'orders', element: <></>}
          ]
+      },
+      {
+         path: '/',
+         element: <HomePage />
+      },
+      {
+         path: customerLink.productsLink + '/:productID',
+         element: <DetailProductPage/>
+      },
+      {
+         path: customerLink.cartLink,
+         element: <CartPage/>
       }
    ]
 }

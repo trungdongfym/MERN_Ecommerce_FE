@@ -34,7 +34,7 @@ function userReducer(state = intialState, action) {
             ...action.payload
          }
       case DELETE_USER:
-         localStorage.clear();
+         localStorage.removeItem('user');
          return {
             user: action.payload,
             isLoging: false

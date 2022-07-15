@@ -15,7 +15,6 @@ function priceFormat(price){
 
 function parsePriceFormat(strPrice){
    const arrSplit = strPrice.split('.');
-   console.log(arrSplit);
    return arrSplit.join('');
 }
 

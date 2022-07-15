@@ -8,7 +8,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { InputOutline, InputPassword, Page, Spinner } from '../../components/base';
 import { commonLink } from '../../helpers/linkConstants';
 import '../pageStyles.scss';
-import './customerStyles.scss';
+import './styles/customerStyles.scss';
 import { registerSchema } from '../../validates/userSchema';
 import { registerUserApi } from '../../apis/userApi';
 import { loginUserAction } from '../../redux/actions/userActions';

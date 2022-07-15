@@ -7,7 +7,7 @@ import SidebarAccountAdmin from "./sidebarAccountAdmin";
 export default function AccountAdminLayout(){
    const userActive = useSelector(userSelector);
    return(
-      <div className="accountLayoutWapper">
+      <div className="accountLayoutWapper admin">
          <div className="userinfo">
             <SidebarAccountAdmin user={userActive}/>
             <Outlet />

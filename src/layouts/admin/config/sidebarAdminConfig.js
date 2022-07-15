@@ -14,7 +14,7 @@ export const sidebarAdminConfig = [
    {
       id:'users',
       title:'Người dùng',
-      path: '/admin',
+      path: adminLink.manageUsersLink,
       icon: <FaUsers className='icon'/>,
       sublist: null
    },
@@ -44,8 +44,8 @@ export const sidebarAdminConfig = [
          },
          {
             id:'exportProducts',
-            title:'Xuất sản phẩm',
-            path: '/admin',
+            title:'Quản lý kho',
+            path: adminLink.manageWarehouseLink,
             icon: null,
          },
       ]

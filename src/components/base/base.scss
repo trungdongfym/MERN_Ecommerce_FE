@@ -21,12 +21,13 @@
       transform: translate(-50%, -50%);
    }
 }
+
 // ---------------------form normal----------------------
-.fieldWapper{
+.fieldWapper {
    display: flex;
    align-items: center;
-   
-   &__label{
+
+   &__label {
       flex: 1 0 100px;
       color: #666 !important;
       font-size: 15px !important;
@@ -34,11 +35,63 @@
       margin-right: 20px;
    }
 
-   & .formCustom{
+   & .formCustom {
       width: 100%;
-      & input{
+
+      & input {
          padding: 8px 14px !important;
          width: 100%;
       }
+   }
+}
+
+// ----------------slider-----------------------
+.slider {
+   position: relative;
+   
+   .swiperBtnWapper{
+      transform: translateY(-50%);
+      position: absolute;
+      color: rgba(0, 0, 0, 0.54);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      z-index: 1000;
+      top: 50%;
+   }
+   .swiper-prev-common,
+   .swiper-next-common {
+      background-color: rgba($color: #fff, $alpha: 0.4);
+      box-shadow: 0 1px 12px 0 rgb(0 0 0 / 12%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      transform: scale(0.5);
+      transform-origin: center center;
+      transition: all .1s cubic-bezier(.4, 0, .6, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      cursor: pointer;
+      &.swiper-button-disabled {
+         visibility: hidden;
+      }
+   }
+
+   &:hover {
+      & .swiper-prev-common,
+      .swiper-next-common {
+         transform: scale(1);
+      }
+   }
+
+   & .swiper-next-common {
+      right: -1200px;
+   }
+
+   & .swiper-prev-common {
+      left: -35px;
    }
 }

@@ -31,7 +31,7 @@ export default function ChooseCategories(props) {
          if (limit <= 0 || isCallApi.current) return;
          try {
             isCallApi.current = true;
-            const { categories: categoriesRetrieved, amount } = await getCategoriesApi(limit, skip);
+            const { categories: categoriesRetrieved, amount } = await getCategoriesApi({limit, skip});
             setCategories(prev => {
                const tmp = structuredClone(prev.concat(categoriesRetrieved));
                if (amount > tmp.length) isCallApi.current = false;

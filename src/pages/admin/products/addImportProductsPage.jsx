@@ -1,11 +1,10 @@
-import { Avatar, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip, Typography } from '@mui/material';
-import { FastField, Form, Formik, FieldArray } from 'formik';
-import { useMemo } from 'react';
-import { useRef, useState } from 'react';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-import { GrUpdate } from 'react-icons/gr';
+import { Avatar, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { FastField, FieldArray, Form, Formik } from 'formik';
+import { useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { addProductsApi } from '../../../apis/productsApi';
+import { addImportProductsApi } from '../../../apis/productsApi';
+import MoreMenuTableImport from '../../../components/admin/moreMenuTableImport';
 import { FormNormal, InputSelect, Page, TextArea } from '../../../components/base';
 import AlertDialog from '../../../components/base/alertDialog';
 import ModalNotify from '../../../components/base/modalNotify';
@@ -14,10 +13,9 @@ import { paymenTypeEnum } from '../../../helpers/constants/productsConst';
 import { parsePriceFormat, priceFormat } from '../../../helpers/formats/priceFormat';
 import { adminLink } from '../../../helpers/linkConstants';
 import useCloseModal from '../../../hooks/autoCloseModal';
+import { userSelector } from '../../../redux/selectors';
 import ChooseProducts from '../../../sections/chooseProducts';
 import { addImportProductsSchema, importProductsSchema } from '../../../validates/productSchema';
-import MoreMenuTableImport from '../../../components/admin/moreMenuTableImport';
-// import './styles/categories.scss';
 
 const paymenOptions = [
    {
@@ -127,12 +125,15 @@ export default function AddImportProductsPage() {
       type: 'success',
       message: ''
    });
+   // a single product due to user import select
    const [productsSelected, setProductsSelected] = useState(null);
    const [modalChooseProducts, setModalChooseProducts] = useState({ open: false, title: 'Chọn sản phẩm nhập' });
-   const [importProducts, setImportProducts] = useState([]);
+   // a array of product include {_id, image, name, amount, price}
+   const [importProducts, setImportProducts] = useState([]); 
    const setFieldTouchedRef = useRef(null);
    const setFieldValueRef = useRef(null);
    const controlFieldArrayRef = useRef(null);
+   const userActive = useSelector(userSelector);
 
    const totalMoneyImport = useMemo(() => {
       const total = importProducts.reduce((totalImport, curImportProduct) => {
@@ -140,7 +141,7 @@ export default function AddImportProductsPage() {
          return totalImport + curPrice * curAmount;
       }, 0);
       return total;
-   }, [productsSelected]);
+   }, [importProducts]);
 
    const initialValues = {
       titleImport: '',
@@ -158,21 +159,14 @@ export default function AddImportProductsPage() {
    }
 
    const handleSubmitAddImportProducts = async (importProduct, resetForm) => {
-      console.log(importProduct);
-      return;
-      const productFormData = new FormData();
-      const { name, preview, price, image, category, note } = product;
-      productFormData.append('name', name);
-      productFormData.append('preview', preview);
-      productFormData.append('price', price);
-      productFormData.append('image', image, image.name);
-      productFormData.append('category', category);
-      productFormData.append('note', note);
+      const {_id: userActiveId} = userActive;
+      importProduct.user = userActiveId; // add user ID import
       try {
-         const productAdded = await addProductsApi(productFormData);
-         if (productAdded) {
+         const importProductAdded = await addImportProductsApi(importProduct);
+         if (importProductAdded) {
             setModalNotifyStatus({ open: true, type: 'success', message: 'Thêm thành công!' });
             setProductsSelected(null);
+            setImportProducts([]);
             resetForm({});
          } else {
             setModalNotifyStatus({ open: true, type: 'error', message: 'Thất bại!' });
@@ -220,7 +214,7 @@ export default function AddImportProductsPage() {
    const handleChangPice = (e, index) => {
       const val = parsePriceFormat(e.target.value);
       const regexDigit = /^\d+$/;
-      if(!regexDigit.test(val)) return;
+      if(val !=='' && !regexDigit.test(val)) return;
       importProducts[index].price = val;
       const tmp = structuredClone(importProducts);
       setImportProducts(tmp);
@@ -267,8 +261,8 @@ export default function AddImportProductsPage() {
       }
    }
 
-   const handleClickCheckboxProducts = (e, cateChoosed) => {
-      setProductsSelected(cateChoosed);
+   const handleClickCheckboxProducts = (e, productChoosed) => {
+      setProductsSelected(productChoosed);
    }
    //end handle choose products
    return (
@@ -297,11 +291,10 @@ export default function AddImportProductsPage() {
             }}
          >
             {(formikProps) => {
-               const { values, errors,
+               const { errors,
                   touched, isSubmitting,
                   setFieldValue
                } = formikProps;
-               console.log(values);
                return (
                   <Form className='addProductsWapper__form '>
                      <div className='addProductsWapper__form__wapperText'>

@@ -3,6 +3,9 @@ import { loginUserApi, logoutUserApi } from '../../apis/userApi';
 import { methodLoginEnum } from '../../helpers/constants/userConst';
 import Cookies from 'universal-cookie';
 import { firebaseAuth } from '../../firebase/firebase';
+import { getCartApi } from '../../apis/cartApi';
+import { getCartFromLocalStorage, mergeCart } from '../../helpers/cartHelper';
+import { deleteCartAction, updateCartAsyncAction } from './cartActions';
 
 const addUserAction = (payload) => {
    return {
@@ -43,11 +46,25 @@ const loginUserAction = userLoginPayload => async (dispatch) => {
       // Get payload of dataformat
       const { payload: userAccessData } = responsePayload;
       const { user, accessToken, refreshToken } = userAccessData;
-      if (!user || !accessToken || !refreshToken)
+      if (!user || !accessToken || !refreshToken) {
          throw new Error('Đăng nhập thất bại!');
+      }
+
+      // check cart remote and cart local then merge them
+      const { _id: userID } = user;
+      const cartRemote = await getCartApi(userID) || [];
+      const cartLocal = getCartFromLocalStorage() || [];
+      const result = mergeCart(cartLocal, cartRemote);
+      if (result) {
+         const { isUpdateRemoteCart, newCart } = result;
+         if (isUpdateRemoteCart && newCart) {
+            await dispatch(updateCartAsyncAction(newCart, userID));
+         }else{
+            await dispatch(updateCartAsyncAction(newCart, null));
+         }
+      }
 
       const cookie = new Cookies();
-
       //Get info token
       const { expiresIn: refExpiresIn, token: refToken } = refreshToken;
       const { expiresIn: accExpiresIn, token: accToken } = accessToken;
@@ -87,7 +104,8 @@ const logoutUserAction = userActive => async (dispatch) => {
       const userLogoutRes = await logoutUserApi(userActive);
       if (userLogoutRes.payload === true) {
          dispatch(deleteUserAction());
-         
+         dispatch(deleteCartAction());
+
          new Cookies().remove('refreshToken');
          if (userActive.methodLogin !== methodLoginEnum.normal) {
             await firebaseAuth.signOut();

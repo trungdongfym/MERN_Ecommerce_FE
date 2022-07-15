@@ -1,0 +1,80 @@
+@use '../../../styles/abstracts/' as *;
+
+.footer {
+   padding: 40px 0;
+
+   &__container {
+      &__row {
+         padding: 0 0 40px 0;
+         display: flex;
+         justify-content: space-between;
+         border-bottom: 1px solid $baseColor;
+
+         & .groupFooter {
+            &__title {
+               &__label {
+                  font-size: 16px;
+                  font-weight: 600;
+                  color: #666;
+                  text-transform: uppercase;
+                  margin-bottom: 20px;
+               }
+            }
+
+            &__subList {
+               list-style: none;
+
+               &__item {
+                  padding: 3px 0;
+
+                  & .itemWapper {
+                     display: flex;
+                     align-items: center;
+
+                     &__icon {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 5px;
+                        font-size: 18px;
+                     }
+                  }
+
+                  & .itemWapper.link {
+                     text-decoration: none;
+                     color: #666;
+                     transition: all .2s ease;
+
+                     &:hover {
+                        color: $baseColor;
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+      &__footerEnd {
+         & .copyrightWapper {
+            &__content {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               color: #555;
+               font-weight: 500;
+
+               &__author {
+                  display: flex;
+                  align-items: center;
+                  margin-left: 5px;
+
+                  & .icon {
+                     display: flex;
+                     align-items: center;
+                     color: red;
+                  }
+               }
+            }
+         }
+      }
+   }
+}

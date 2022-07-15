@@ -1,7 +1,7 @@
 import axios from 'axios';
-import queryString from 'query-string';
 import RefreshTokenApi from './refreshTokenApi';
 import Cookies from 'universal-cookie';
+import qs from 'qs';
 
 
 const axiosClient = axios.create({
@@ -10,7 +10,7 @@ const axiosClient = axios.create({
       'content-type': 'application/json'
    },
    paramsSerializer: (searchParam) => {
-      return queryString.stringify(searchParam);
+      return qs.stringify(searchParam);
    }
 });
 
@@ -33,8 +33,7 @@ axiosClient.interceptors.request.use(async (config) => {
 
          const refreshToken = cookie.get('refreshToken');
          if (!refreshToken) {
-            window.location.reload();
-            return;
+            throw new Error('Not refreshtoken!');
          }
          const accessTokenPayload = await refeshTokenApi(refreshToken);
          // console.log(accessTokenPayload);
@@ -48,7 +47,7 @@ axiosClient.interceptors.request.use(async (config) => {
          accessToken = newAccessToken;
          refeshTokenApi = null;
       } catch (error) {
-         localStorage.clear();
+         localStorage.removeItem('user');
          cookie.remove('refreshToken');
          window.location.reload();
       }
@@ -74,7 +73,7 @@ axiosClient.interceptors.response.use((response) => {
    return response;
 }, (err) => {
    const { response } = err;
-   throw new Error(response.data);
+   throw new Error(response?.data || err);
 });
 
 export default axiosClient;

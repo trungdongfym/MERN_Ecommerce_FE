@@ -1,8 +1,33 @@
 @use '../../../styles/abstracts/' as *;
 
 //-----navbar-----
+.homeHeader{
+   position: fixed;
+   z-index: 10000;
+   width: 100vw;
+   top: 0;
+}
+.homeContent{
+   position: relative;
+   top: 97.4px;
+   background-color: $mainBgColor;
+   &__contentWapper{
+      margin: 0 6rem;
+   }
+}
+
+.homeFooter{
+   position: relative;
+   top: 97.4px;
+   background-color: #fff;
+   border-top: 4px solid $baseColor;
+   &__footerWapper{
+      margin: 0 6rem;
+   }
+}
+
 .navbar {
-   padding: 1.25rem 1.875rem;
+   padding: 0.8rem 0;
 
    &.customer {
       background: linear-gradient(-180deg, $baseColorSolid, $baseColorBlur);
@@ -10,6 +35,7 @@
       & .navbar__wrapperList {
          display: flex;
          justify-content: space-between;
+         margin: 0 6rem;
 
          & .navbar_linklist {
             display: flex;
@@ -18,6 +44,7 @@
 
             & .listItem {
                margin: 0 1rem 0 0;
+               // color: #0062ff;
 
                & .subList {
                   display: flex;
@@ -135,6 +162,81 @@
 
             & .listItem:last-child {
                margin-right: 0 !important;
+            }
+         }
+      }
+      & .navbar__wapperTool{
+         margin: 0 6rem;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         &__logo{
+            display: flex;
+            text-decoration: none;
+            align-items: center;
+            &__title{
+               color: #fefefe;
+               letter-spacing: 1px;
+               margin: 0;
+               padding-left: 10px;
+            }
+         }
+         &__wapperSearch{
+            display: flex;
+            flex: 0 1 600px;
+            &__form{
+               display: flex;
+               align-items: center;
+               flex: 1 1 100%;
+               position: relative;
+               &__input{
+                  width: 100%;
+                  padding: 5px 10px;
+                  font-size: 0.9rem;
+                  border-radius: 2px;
+                  border: 1px solid gray;
+                  &:focus{
+                     outline: none;
+                  }
+               }
+               &__button{
+                  padding: 5px 10px;
+                  background-color: $baseColorSolid;
+                  color: #fff;
+                  font-size: 1rem;
+                  border: none;
+                  border-radius: 2px;
+                  display: flex;
+                  align-items: center;
+                  position: absolute;
+                  right: 2px;
+                  cursor: pointer;
+                  &:hover{
+                     background-color: rgba($color:  $baseColorSolid, $alpha: 0.8);
+                  }
+               }
+            }
+         }
+         &__cart{
+            & .badge{
+               & .logo{
+                  width: 25px;
+                  height: 25px;
+                  color: #fff;
+               }
+            }
+         }
+         &__shop{
+            &__link{
+               text-decoration: none;
+               color: #fff;
+               display: flex;
+               align-items: center;
+               font-size: 18px;
+               text-transform: capitalize;
+               &__title{
+                  margin-left: 5px;
+               }
             }
          }
       }

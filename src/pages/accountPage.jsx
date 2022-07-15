@@ -144,7 +144,7 @@ export default function AccountPage(){
                }
             >
                {(formikProps)=>{
-                  const {values, setFieldValue, isSubmitting, errors } = formikProps;
+                  const {values, setFieldValue, isSubmitting, setTouched } = formikProps;
                   // console.log(errors)
                   return(
                      <Form className='wrapperProfile__formContainer__form' autoComplete='off'>
@@ -211,7 +211,8 @@ export default function AccountPage(){
                                  <FastField
                                     name='avatar'
                                     component={InputFileImage}
-                                    setFieldValue={setFieldValue}
+                                    setFieldValue = {setFieldValue}
+                                    setFieldTouched = {setTouched}
                                     label = 'Chọn ảnh'
                                     setPreviewAvt = {setPreviewAvt}
                                  />

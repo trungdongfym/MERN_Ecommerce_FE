@@ -1,9 +1,12 @@
 export const registerLink = '/user/register';
 
-const userinfo = 'userinfo';
-const userAccount = 'account';
-const profile = 'profile';
-const password = 'password';
+export const userinfo = 'userinfo';
+export const userAccount = 'account';
+export const profile = 'profile';
+export const password = 'password';
+export const shopLink = '/shop';
+export const productsLink = '/products';
+export const cartLink = '/cart';
 
 export const profileLink = '/'+[userinfo,userAccount,profile].join('/');
 export const passwordLink = '/'+[userinfo,userAccount,password].join('/');
