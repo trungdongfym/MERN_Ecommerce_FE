@@ -7,7 +7,6 @@ export async function getCartApi(userID) {
             userID: userID
          }
       });
-      console.log(cart);
       return cart;
    } catch (error) {
       throw error;

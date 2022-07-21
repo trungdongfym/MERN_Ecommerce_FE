@@ -72,8 +72,10 @@ axiosClient.interceptors.response.use((response) => {
    }
    return response;
 }, (err) => {
-   const { response } = err;
-   throw new Error(response?.data || err);
+   if(!axios.isCancel(err)){
+      const { response } = err;
+      throw new Error(response?.data || err);
+   }
 });
 
 export default axiosClient;

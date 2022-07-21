@@ -4,13 +4,14 @@ import { useMemo, useState } from "react";
 import { GrFormAdd, GrFormSubtract } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Page } from "../../components/base";
 import { TableHeadComponent } from "../../components/base/tableComponents";
 import { priceFormat } from "../../helpers/formats/priceFormat";
-import { customerLink } from "../../helpers/linkConstants";
+import { commonLink, customerLink } from "../../helpers/linkConstants";
 import { cartSelecttor, userSelector } from "../../redux/selectors";
-import { updateCartAsyncAction } from "../../redux/actions/cartActions";
+import { fetchCartAction, updateCartAsyncAction } from "../../redux/actions/cartActions";
+import { addOrderListAction } from '../../redux/actions/orderActions';
 import "./styles/cartStyles.scss";
 import { useEffect } from "react";
 import { useRef } from "react";
@@ -37,6 +38,8 @@ export default function CartPage() {
       open: false, message: ''
    });
    const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const location = useLocation();
    const isUpdate = useRef(false); // lock call api
 
    const { totalNoSale, totalSale } = useMemo(() => {
@@ -49,7 +52,7 @@ export default function CartPage() {
          const { product, amount } = curItem;
          const { price, sale } = product || {};
 
-         if (sale) {
+         if (sale && sale > 0) {
             return totalMoney + parseInt(price - price * (sale / 100)) * amount;
          }
          return totalMoney + price * amount;
@@ -79,6 +82,20 @@ export default function CartPage() {
          timeID && clearTimeout(timeID);
       }
    }, [cartUpdate]);
+
+   useEffect(() => {
+      const { _id: userID } = userActive || {};
+      if (userID) {
+         const getCart = async () => {
+            try {
+               await dispatch(fetchCartAction(userID));
+            } catch (error) {
+               console.log(error);
+            }
+         }
+         getCart();
+      }
+   }, [userActive]);
 
    useEffect(() => {
       setCartUpdate(cart);
@@ -176,6 +193,25 @@ export default function CartPage() {
 
    useCloseModal(handleCloseModalNotify, modalNotify, 2000);
 
+   // handle Order
+   const handleClickOrder = () => {
+      if (!userActive) {
+         navigate(commonLink.loginLink, { state: location });
+         return;
+      }
+      if (cartItemSelected.length === 0) {
+         setModalNotify({ open: true, type: 'info', message: 'Bạn chưa chọn sản phẩm nào để mua' });
+         return;
+      }
+      const orderList = cartUpdate.filter((cartItem) => {
+         const { product } = cartItem;
+         const { _id: productID } = product || {};
+         return cartItemSelected.includes(productID);
+      });
+      dispatch(addOrderListAction(orderList));
+      navigate(customerLink.orderLink);
+   }
+
    if (Array.isArray(cart) && cart.length === 0) {
       return (
          <Page title='Giỏ hàng' className='cart'>
@@ -227,7 +263,6 @@ export default function CartPage() {
                         const isItemSelected = cartItemSelected.indexOf(productID) !== -1;
                         return (
                            <TableRow
-                              hover
                               key={index}
                               tabIndex={-1}
                               role="checkbox"
@@ -358,7 +393,12 @@ export default function CartPage() {
                      </span>
                   </div>
                   <div className="toolCartWapper__cartInfoWapper__payment">
-                     <button className="btnPayment">Thanh toán</button>
+                     <button
+                        className="btnOrder"
+                        onClick={handleClickOrder}
+                     >
+                        Mua hàng
+                     </button>
                   </div>
                </div>
             </div>

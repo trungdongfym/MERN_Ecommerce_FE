@@ -26,7 +26,7 @@ export const sidebarAccountConfig = [
    {
       id: 'orders',
       title: 'Đơn mua',
-      path: '/userinfo/orders',
+      path: '/' + customerLink.listOrder,
       icons: <BsFileTextFill />,
       sublist: null
    }

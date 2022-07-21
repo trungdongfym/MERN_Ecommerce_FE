@@ -5,6 +5,12 @@ export function getCartFromLocalStorage() {
    return cartLocal;
 }
 
+export function getOrderListFromLocalStorage() {  
+   const orderListJson = localStorage.getItem('orderList');
+   const orderList = JSON.parse(orderListJson);
+   return orderList;
+}
+
 export function mergeCart(cartLocal, cartRemote) {
    if (!Array.isArray(cartLocal) && !Array.isArray(cartRemote)) {
       return null;

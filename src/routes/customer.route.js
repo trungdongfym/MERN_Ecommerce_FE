@@ -3,16 +3,18 @@ import AccountLayout from "../layouts/customer/accountLayout";
 import AccountPage from "../pages/accountPage";
 import RequireAuth from "../authentication/requireAuth";
 import DecentralAuth from "../authentication/decentralAuth";
-import {roleEnum} from '../helpers/constants/userConst';
+import { roleEnum } from '../helpers/constants/userConst';
 import ChangePasswordPage from "../pages/changePasswordPage";
 import HomePage from "../pages/customers/homePage";
 import { customerLink } from "../helpers/linkConstants";
 import DetailProductPage from "../pages/customers/detailProductPage";
 import CartPage from "../pages/customers/cartPage";
+import OrderPage from "../pages/customers/orderPage";
+import DetailOrderPage from "../pages/customers/detailOrderPage";
 
 export const customerRoute = {
    path: '/',
-   element: 
+   element:
       <DecentralAuth roleArray={[roleEnum.Custommer]}>
          <HomeLayout />
       </DecentralAuth>
@@ -20,14 +22,15 @@ export const customerRoute = {
    children: [
       {
          path: customerLink.userinfo,
-         element: 
+         element:
             <RequireAuth>
                <AccountLayout />
             </RequireAuth>,
          children: [
-            {path: [customerLink.userAccount, customerLink.profile].join('/'), element: <AccountPage/>},
-            {path: [customerLink.userAccount, customerLink.password].join('/'), element: <ChangePasswordPage/>},
-            {path: 'orders', element: <></>}
+            { path: [customerLink.userAccount, customerLink.profile].join('/'), element: <AccountPage /> },
+            { path: [customerLink.userAccount, customerLink.password].join('/'), element: <ChangePasswordPage /> },
+            { path: 'orders', element: <></> },
+            { path: customerLink.listOrder + '/:orderID', element: <DetailOrderPage/> }
          ]
       },
       {
@@ -36,11 +39,18 @@ export const customerRoute = {
       },
       {
          path: customerLink.productsLink + '/:productID',
-         element: <DetailProductPage/>
+         element: <DetailProductPage />
       },
       {
          path: customerLink.cartLink,
-         element: <CartPage/>
-      }
+         element: <CartPage />
+      },
+      {
+         path: customerLink.orderLink,
+         element:
+            <RequireAuth>
+               <OrderPage />
+            </RequireAuth>
+      },
    ]
 }

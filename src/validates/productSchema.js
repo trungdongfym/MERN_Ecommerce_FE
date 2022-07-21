@@ -50,7 +50,7 @@ export const addImportProductsSchema = yup.object().shape({
             .positive('Số lượng không hợp lệ!')
             .integer('Số lượng không hợp lệ!')
             .required('Thiếu số lượng nhập!'),
-         price: yup.number().positive('Số lượng không hợp lệ!').required('Thiếu giá nhập!'),
+         price: yup.number().positive('Số lượng sản phẩm không hợp lệ!').required('Thiếu giá nhập!'),
       }))
       .min(1, 'Chưa có sản phẩm nhập!')
       .ensure(),

@@ -7,16 +7,16 @@ import { Link, useParams } from "react-router-dom";
 import { SwiperSlide } from "swiper/react";
 import { getProductsApi, getRelateProductApi } from "../../apis/productsApi";
 import { Page, Spinner } from "../../components/base";
-import SlideRow from "../../components/base/slideRow";
 import ModalNotify from '../../components/base/modalNotify';
+import SlideRow from "../../components/base/slideRow";
 import ProductContainer from "../../components/customer/productContainer";
 import { priceFormat } from "../../helpers/formats/priceFormat";
 import { customerLink } from "../../helpers/linkConstants";
 import { scrollToAny } from "../../helpers/scrollToAny";
+import useCloseModal from '../../hooks/autoCloseModal';
 import { addToCartAsyncAction, updateCartAsyncAction } from "../../redux/actions/cartActions";
 import { cartSelecttor, userSelector } from '../../redux/selectors';
 import './styles/detailProduct.scss';
-import useCloseModal from '../../hooks/autoCloseModal';
 
 export default function DetailProductPage() {
    const { productID } = useParams();
@@ -120,10 +120,12 @@ export default function DetailProductPage() {
          title={product && product.name}
          className='detailProductWapper'
       >
-         <ModalNotify
-            {...modalNotify}
-            handleClose={handleCloseModalNotify}
-         />
+         {modalNotify.open &&
+            <ModalNotify
+               {...modalNotify}
+               handleClose={handleCloseModalNotify}
+            />
+         }
          <div style={{ display: 'none' }} role='gotoPoint' ref={refGotoTop}></div>
          <div className='detailProductWapper__productWapper detailProductWapper__container'>
             <div className='detailProductWapper__productWapper__avtProduct'>

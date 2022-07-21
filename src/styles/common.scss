@@ -17,3 +17,12 @@ ul{
 #menu- {
    z-index: 100000;
 }
+
+input[disabled]{
+   color: #000;
+   -webkit-text-fill-color: rgba(0, 0, 0, 1) !important;
+}
+
+.Mui-disabled{
+   -webkit-text-fill-color: rgba(0, 0, 0, 1) !important;
+}

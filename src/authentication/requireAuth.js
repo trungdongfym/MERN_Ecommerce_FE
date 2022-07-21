@@ -13,19 +13,19 @@ export default function RequireAuth({ children }) {
 
    useEffect(() => {
       const unsubcribe = onAuthStateChanged(firebaseAuth, (user) => {
-         const { methodLogin } = userActive || false;
+         const { methodLogin = false } = userActive || {};
          // if user is logout 
          if (methodLogin !== 'normal' && methodLogin !== false && !user) {
-            navigate(commonLink.loginLink, { replace: true });
+            navigate(commonLink.loginLink, { replace: true, state: location });
             return;
          }
       });
       return unsubcribe;
    }, []);
-   
+
    if (!userActive) {
       // return navigate(commonLink.loginLink,{replace:true, state:{location}});
-      return <Navigate to={commonLink.loginLink} replace={true} state={location}/>
+      return <Navigate to={commonLink.loginLink} replace={true} state={location} />
    }
    return children;
 }

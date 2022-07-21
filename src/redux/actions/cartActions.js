@@ -1,4 +1,4 @@
-import { addProductToCartApi, updateCartApi } from '../../apis/cartApi';
+import { addProductToCartApi, getCartApi, updateCartApi } from '../../apis/cartApi';
 import * as cartConst from '../constants';
 
 const addToCartAction = (cartItem) => {
@@ -73,8 +73,18 @@ const updateCartAsyncAction = (newCart, userID) => async (dispatch) => {
    }
 }
 
+const fetchCartAction = (userID) => async (dispatch) => {
+   try {
+      const cartRemote = await getCartApi(userID) || [];
+      dispatch(updateCartAction(cartRemote));
+   } catch (error) {
+      throw error;
+   }
+}
+
 export {
    addToCartAsyncAction,
    updateCartAsyncAction,
-   deleteCartAction
+   deleteCartAction,
+   fetchCartAction
 };
