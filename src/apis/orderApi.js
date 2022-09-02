@@ -32,8 +32,19 @@ const getOrderApi = async (orderID) => {
 
 const updateOrderApi = async (orderUpdateData, orderID) => {
    try {
-      const response = await axiosClient.patch(`/orders/${orderID}`, orderUpdateData);
+      const response = await axiosClient.get(`/orders/${orderID}`, orderUpdateData);
       return response;
+   } catch (error) {
+      throw error;
+   }
+}
+
+const getOrderListApi = async (queryObject) => {
+   try {
+      const orderList = await axiosClient.get(`/orderList`, {
+         params: queryObject
+      });
+      return orderList;
    } catch (error) {
       throw error;
    }
@@ -42,5 +53,6 @@ const updateOrderApi = async (orderUpdateData, orderID) => {
 export {
    addOrderApi,
    getOrderApi,
-   updateOrderApi
+   updateOrderApi,
+   getOrderListApi
 }

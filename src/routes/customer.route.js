@@ -11,6 +11,9 @@ import DetailProductPage from "../pages/customers/detailProductPage";
 import CartPage from "../pages/customers/cartPage";
 import OrderPage from "../pages/customers/orderPage";
 import DetailOrderPage from "../pages/customers/detailOrderPage";
+import ShopLayout from "../layouts/customer/shopLayout";
+import ShopPage from "../pages/customers/shopPage";
+import ListOrderPage from '../pages/customers/orderListPage';
 
 export const customerRoute = {
    path: '/',
@@ -29,8 +32,8 @@ export const customerRoute = {
          children: [
             { path: [customerLink.userAccount, customerLink.profile].join('/'), element: <AccountPage /> },
             { path: [customerLink.userAccount, customerLink.password].join('/'), element: <ChangePasswordPage /> },
-            { path: 'orders', element: <></> },
-            { path: customerLink.listOrder + '/:orderID', element: <DetailOrderPage/> }
+            { path: customerLink.listOrder, element: <ListOrderPage /> },
+            { path: customerLink.listOrder + '/:orderID', element: <DetailOrderPage /> }
          ]
       },
       {
@@ -52,5 +55,12 @@ export const customerRoute = {
                <OrderPage />
             </RequireAuth>
       },
+      {
+         path: '/',
+         element: <ShopLayout />,
+         children: [
+            { path: customerLink.shopLink, element: <ShopPage /> }
+         ]
+      }
    ]
 }

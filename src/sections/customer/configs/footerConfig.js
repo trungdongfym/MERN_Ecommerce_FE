@@ -101,14 +101,14 @@ export const footerConfig = [
       subList: [
          {
             id: 'address',
-            label: 'Hoằng Hà, Hoằng Hóa, Thanh Hóa',
+            label: 'Thanh Trì, Hà Nội',
             icon: <MdLocationPin />,
             title: '',
             path: '/'
          },
          {
             id: 'phone',
-            label: '+0975107636',
+            label: '+0975107xxx',
             icon: <BsFillTelephoneFill />,
             title: '',
             path: '/'

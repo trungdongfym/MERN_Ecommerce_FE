@@ -1,46 +1,56 @@
-import { Avatar, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
-import { FastField, Form, Formik } from "formik";
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getOrderApi, updateOrderApi } from "../../apis/orderApi";
-import { FormNormal, InputSelect, Page, TextArea } from "../../components/base";
-import ModalNotify from "../../components/base/modalNotify";
-import StepperCustom from "../../components/base/stepper";
-import { TableHeadComponent } from "../../components/base/tableComponents";
-import { statusOrderEnum } from "../../helpers/constants/orderConst";
-import { paymenTypeEnum } from "../../helpers/constants/productsConst";
-import { priceFormat } from "../../helpers/formats/priceFormat";
-import useCloseModal from "../../hooks/autoCloseModal";
-import { updateOrderSchema } from "../../validates/orderSchema";
+import {
+   Avatar,
+   Stack,
+   Table,
+   TableBody,
+   TableCell,
+   TableContainer,
+   TableRow,
+   Typography,
+} from '@mui/material';
+import { FastField, Form, Formik } from 'formik';
+import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getOrderApi, updateOrderApi } from '../../apis/orderApi';
+import { FormNormal, InputSelect, Page, TextArea } from '../../components/base';
+import ModalNotify from '../../components/base/modalNotify';
+import StepperCustom from '../../components/base/stepper';
+import { TableHeadComponent } from '../../components/base/tableComponents';
+import { statusOrderEnum } from '../../helpers/constants/orderConst';
+import { paymenTypeEnum } from '../../helpers/constants/productsConst';
+import { priceFormat } from '../../helpers/formats/priceFormat';
+import useCloseModal from '../../hooks/autoCloseModal';
+import { updateOrderSchema } from '../../validates/orderSchema';
 import { MdOutlineCancel } from 'react-icons/md';
 import './styles/detailOrderStyles.scss';
+import { dateTimeFormat } from '../../helpers/formats/dateTimeFormat';
 
 const tableProductsHead = [
    { id: 'name', label: 'Tên sản phẩm', alignRight: false },
    { id: 'unitPrice', label: 'Đơn giá (VNĐ)', alignRight: false },
    { id: 'amount', label: 'Số lượng', alignRight: false },
    { id: 'totalMoney', label: 'Tổng tiền (VNĐ)', alignRight: false },
-]
+];
 
 const paymenOptions = [
    {
       id: paymenTypeEnum.cash,
       label: 'Thanh toán tiền mặt',
-      value: paymenTypeEnum.cash
+      value: paymenTypeEnum.cash,
    },
    {
       id: paymenTypeEnum.paypal,
       label: 'Thanh toán qua paypal',
-      value: paymenTypeEnum.paypal
-   }
-]
+      value: paymenTypeEnum.paypal,
+   },
+];
 
 const statusOrderMap = {
-   Pending: 'Chờ duyệt',
+   Pending: 'Chờ xác nhận',
    Approved: 'Đã duyệt',
    Delivery: 'Đang giao hàng',
    Completed: 'Hoàn thành',
-}
+};
 
 const stepsOrder = Object.values(statusOrderMap);
 const stepKeys = Object.keys(statusOrderMap);
@@ -100,24 +110,28 @@ export default function DetailOrderPage() {
          } catch (error) {
             console.log(error);
          }
-      }
+      };
       getOrder();
    }, [orderID]);
 
    const handleCloseModalNotify = () => {
-      setModalNotify(prev => ({ ...prev, open: false }));
-   }
+      setModalNotify((prev) => ({ ...prev, open: false }));
+   };
    useCloseModal(handleCloseModalNotify, modalNotify, 2500);
 
    const handleCancelOrder = async () => {
       if (activeStep > 0) {
-         setModalNotify({ open: true, type: 'error', message: 'Không thể hủy đơn hàng đã được duyệt!' });
+         setModalNotify({
+            open: true,
+            type: 'error',
+            message: 'Không thể hủy đơn hàng đã được duyệt!',
+         });
          return;
       }
       try {
          const result = await updateOrderApi({ statusOrder: statusOrderEnum.CANCELED }, orderID);
          if (result?.status) {
-            setDetailOrder(prev => ({ ...prev, statusOrder: statusOrderEnum.CANCELED }))
+            setDetailOrder((prev) => ({ ...prev, statusOrder: statusOrderEnum.CANCELED }));
             setModalNotify({ open: true, type: 'success', message: 'Hủy đơn hàng thành công!' });
          } else {
             setModalNotify({ open: true, type: 'error', message: 'Hủy đơn hàng thất bại!' });
@@ -125,50 +139,55 @@ export default function DetailOrderPage() {
       } catch (error) {
          setModalNotify({ open: true, type: 'error', message: error?.message });
       }
-   }
+   };
 
    const handleReOrder = async () => {
       try {
          const result = await updateOrderApi({ statusOrder: statusOrderEnum.PENDING }, orderID);
          if (result?.status) {
-            setDetailOrder(prev => ({ ...prev, statusOrder: statusOrderEnum.PENDING }))
-            setModalNotify({ open: true, type: 'success', message: 'Đặt lại đơn hàng thành công!' });
+            setDetailOrder((prev) => ({ ...prev, statusOrder: statusOrderEnum.PENDING }));
+            setModalNotify({
+               open: true,
+               type: 'success',
+               message: 'Đặt lại đơn hàng thành công!',
+            });
          } else {
             setModalNotify({ open: true, type: 'error', message: 'Đặt lại đơn hàng thất bại!' });
          }
       } catch (error) {
          setModalNotify({ open: true, type: 'error', message: error?.message });
       }
-   }
+   };
 
-   const handleUpdateOrder = (updateOrder) => {
-      console.log('ok');
-   }
+   const handleUpdateOrder = async (updateOrder) => {
+      try {
+         const result = await updateOrderApi(updateOrder, orderID);
+         if (result?.status) {
+            setModalNotify({
+               open: true,
+               type: 'success',
+               message: result?.message,
+            });
+         } else {
+            setModalNotify({ open: true, type: 'error', message: result.message });
+         }
+      } catch (error) {
+         setModalNotify({ open: true, type: 'error', message: error?.message });
+      }
+   };
 
    return (
-      <Page title='Chi tiết đơn hàng' className='detailOrder'>
-         {modalNotify.open &&
-            <ModalNotify
-               {...modalNotify}
-               handleClose={handleCloseModalNotify}
-            />
-         }
-         <h3 className='detailOrder__title'>Thông tin đơn hàng</h3>
-         {detailOrder?.statusOrder !== statusOrderEnum.CANCELED ?
-            (
-               <StepperCustom
-                  steps={stepsOrder}
-                  activeStep={activeStep}
-               />
-            ) : (
-               <div className="detailOrder__canceledOrder">
-                  <MdOutlineCancel className="icon" />
-                  <span className="detailOrder__canceledOrder__title">
-                     Đơn hàng đã bị hủy
-                  </span>
-               </div>
-            )
-         }
+      <Page title="Chi tiết đơn hàng" className="detailOrder">
+         {modalNotify.open && <ModalNotify {...modalNotify} handleClose={handleCloseModalNotify} />}
+         <h3 className="detailOrder__title">Thông tin đơn hàng</h3>
+         {detailOrder?.statusOrder !== statusOrderEnum.CANCELED ? (
+            <StepperCustom steps={stepsOrder} activeStep={activeStep} />
+         ) : (
+            <div className="detailOrder__canceledOrder">
+               <MdOutlineCancel className="icon" />
+               <span className="detailOrder__canceledOrder__title">Đơn hàng đã bị hủy</span>
+            </div>
+         )}
          <Formik
             initialValues={initialValues}
             validationSchema={updateOrderSchema}
@@ -180,66 +199,84 @@ export default function DetailOrderPage() {
             }}
          >
             {(formikProps) => {
-               const { isSubmitting, errors, values } = formikProps;
+               const { isSubmitting } = formikProps;
                return (
-                  <Form className='orderWapper'>
-                     <div className='orderWapper__wapperText'>
-                        <div className='orderWapper__wapperText__field'>
-                           <label className='fieldProductsLabel'>Địa chỉ nhận hàng</label>
+                  <Form className="orderWapper">
+                     <div className="orderWapper__wapperText">
+                        <div className="orderWapper__wapperText__field">
+                           <div className="orderId">
+                              {`Mã đơn hàng: `}
+                              <span className="orderId__id">{orderID}</span>
+                           </div>
+                        </div>
+                        <div className="orderWapper__wapperText__field">
+                           <div className="createOrder">
+                              {`Ngày tạo đơn: 
+                                 ${dateTimeFormat(new Date(detailOrder.createdAt))}`}
+                           </div>
+                        </div>
+                        <div className="orderWapper__wapperText__field">
+                           <div className="updateOrder">
+                              {`Cập nhập lần cuối: 
+                                 ${dateTimeFormat(new Date(detailOrder.updatedAt))}`}
+                           </div>
+                        </div>
+                        <div className="orderWapper__wapperText__field">
+                           <label className="fieldProductsLabel">Địa chỉ nhận hàng</label>
                            <FastField
-                              name='receiveAddress'
+                              name="receiveAddress"
                               component={FormNormal}
                               disabled={isDisableInput}
                            />
                         </div>
-                        <div className='orderWapper__wapperText__field'>
-                           <label className='fieldProductsLabel'>Số điện thoại người nhận</label>
+                        <div className="orderWapper__wapperText__field">
+                           <label className="fieldProductsLabel">Số điện thoại người nhận</label>
                            <FastField
-                              name='receivePhone'
+                              name="receivePhone"
                               component={FormNormal}
                               disabled={isDisableInput}
                            />
                         </div>
-                        <div className='orderWapper__wapperText__field'>
-                           <label className='fieldProductsLabel'>Phương thức thanh toán</label>
+                        <div className="orderWapper__wapperText__field">
+                           <label className="fieldProductsLabel">Phương thức thanh toán</label>
                            <FastField
-                              name='paymentType'
+                              name="paymentType"
                               component={InputSelect}
                               optionsList={paymenOptions}
                               disabled={isDisableInput}
                            />
                         </div>
-                        <div className='orderWapper__wapperText__field'>
-                           <label className='fieldProductsLabel'>Ghi chú đặt hàng</label>
+                        <div className="orderWapper__wapperText__field">
+                           <label className="fieldProductsLabel">Ghi chú đặt hàng</label>
                            <FastField
-                              name='note'
+                              name="note"
                               component={TextArea}
-                              className='textAreaCustom'
+                              className="textAreaCustom"
                               disabled={isDisableInput}
                            />
                         </div>
                      </div>
-                     <div className='orderWapper__tableProducts'>
-                        <h4 className='orderWapper__tableProducts__title'>
-                           Sản phẩm
-                        </h4>
+                     <div className="orderWapper__tableProducts">
+                        <h4 className="orderWapper__tableProducts__title">Sản phẩm</h4>
                         <TableContainer>
                            <Table>
                               <TableHeadComponent tableHeadList={tableProductsHead} />
                               <TableBody>
                                  {orderList.map((orderItem) => {
                                     const { product, amount, price, sale } = orderItem;
-                                    const { _id: idProduct, name: nameProduct, image } = product || {};
+                                    const {
+                                       _id: idProduct,
+                                       name: nameProduct,
+                                       image,
+                                    } = product || {};
 
-                                    const unitPrice = sale && sale > 10 ?
-                                       parseInt(price - price * (sale / 100)) * amount :
-                                       price * amount;
+                                    const unitPrice =
+                                       sale && sale > 10
+                                          ? parseInt(price - price * (sale / 100)) * amount
+                                          : price * amount;
 
                                     return (
-                                       <TableRow
-                                          key={idProduct}
-                                          tabIndex={-1}
-                                       >
+                                       <TableRow key={idProduct} tabIndex={-1}>
                                           <TableCell component="th" scope="row">
                                              <Stack direction="row" alignItems="center" spacing={1}>
                                                 <Avatar alt={nameProduct} src={image} />
@@ -251,9 +288,7 @@ export default function DetailOrderPage() {
                                           <TableCell align="left">
                                              {priceFormat(unitPrice)}
                                           </TableCell>
-                                          <TableCell align="left">
-                                             {amount}
-                                          </TableCell>
+                                          <TableCell align="left">{amount}</TableCell>
                                           <TableCell align="left">
                                              {priceFormat(unitPrice * amount)}
                                           </TableCell>
@@ -263,34 +298,39 @@ export default function DetailOrderPage() {
                               </TableBody>
                            </Table>
                         </TableContainer>
-                        <div className='orderWapper__tableProducts__totalMoney'>
-                           {`Tổng số tiền (${orderList.length} sản phẩm): ${priceFormat(totalMoney)} (VNĐ)`}
+                        <div className="orderWapper__tableProducts__totalMoney">
+                           {`Tổng số tiền (${orderList.length} sản phẩm): ${priceFormat(
+                              totalMoney
+                           )} (VNĐ)`}
                         </div>
                      </div>
-                     <div className='orderWapper__order'>
-                        {detailOrder?.statusOrder === statusOrderEnum.CANCELED ?
-                           (<button
+                     <div className="orderWapper__order">
+                        {detailOrder?.statusOrder === statusOrderEnum.CANCELED ? (
+                           <button
                               type="button"
-                              className='button'
+                              className="button"
                               disabled={isSubmitting}
                               onClick={handleReOrder}
                            >
                               Đặt lại đơn hàng
-                           </button>) :
-                           (<button
+                           </button>
+                        ) : (
+                           <button
                               type="button"
-                              className='button btnCancel'
+                              className="button btnCancel"
                               disabled={isSubmitting}
                               onClick={handleCancelOrder}
                            >
                               Hủy đơn hàng
-                           </button>)
-                        }
+                           </button>
+                        )}
                         <button
-                           type='submit'
-                           className='button'
-                           disabled={isSubmitting || activeStep > 0
-                              || detailOrder?.statusOrder === statusOrderEnum.CANCELED
+                           type="submit"
+                           className="button"
+                           disabled={
+                              isSubmitting ||
+                              activeStep > 0 ||
+                              detailOrder?.statusOrder === statusOrderEnum.CANCELED
                            }
                         >
                            Cập nhập đơn hàng

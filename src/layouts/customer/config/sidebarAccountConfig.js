@@ -1,5 +1,5 @@
-import {FaUser} from 'react-icons/fa';
-import {BsFileTextFill} from 'react-icons/bs';
+import { FaUser } from 'react-icons/fa';
+import { BsFileTextFill } from 'react-icons/bs';
 import { customerLink } from '../../../helpers/linkConstants';
 
 export const sidebarAccountConfig = [
@@ -8,7 +8,7 @@ export const sidebarAccountConfig = [
       title: 'Tài khoản của tôi',
       path: customerLink.profileLink,
       icons: <FaUser />,
-      sublist:[
+      sublist: [
          {
             id: 'profile',
             title: 'Hồ sơ',
@@ -26,7 +26,7 @@ export const sidebarAccountConfig = [
    {
       id: 'orders',
       title: 'Đơn mua',
-      path: '/' + customerLink.listOrder,
+      path: customerLink.detailOrderLink,
       icons: <BsFileTextFill />,
       sublist: null
    }

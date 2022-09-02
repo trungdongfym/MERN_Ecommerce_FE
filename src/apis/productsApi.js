@@ -27,6 +27,20 @@ const getProductsApi = async (objectQuery) => {
    }
 }
 
+const getListProductApi = async (objectQuery) => {
+   try {
+      const products = await axiosClient.get('/products', {
+         params: objectQuery,
+         headers: {
+            'x-auth': false
+         }
+      });
+      return products;
+   } catch (error) {
+      throw error;
+   }
+}
+
 const getRelateProductApi = async (productID) => {
    try {
       const products = await axiosClient.get('/getRelateProducts', {
@@ -125,5 +139,6 @@ export {
    deleteProductApi,
    deleteImportProductApi,
    updateProductsApi,
-   getRelateProductApi
+   getRelateProductApi,
+   getListProductApi
 }

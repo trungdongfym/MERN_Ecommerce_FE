@@ -15,16 +15,16 @@
       font-size: 16px;
    }
 
-   &__canceledOrder{
+   &__canceledOrder {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      & .icon{
+      & .icon {
          font-size: 28px;
          color: red;
       }
-      &__title{
+      &__title {
          font-size: 17px;
          text-transform: capitalize;
          font-weight: 500;
@@ -38,15 +38,31 @@
       width: 90%;
       margin: 20px auto;
 
-      &__tableProducts {
-         box-shadow: 1px 1px 1px 0 rgb(0 0 0 / 5%),
-            -1px -1px 1px 0 rgb(0 0 0 / 5%),
+      & .orderId {
+         color: #666;
+         font-weight: 500;
       }
 
-      &__order{
-         .btnCancel{
+      & .createOrder {
+         font-weight: 500;
+         color: #666;
+         margin-top: 15px;
+      }
+
+      & .updateOrder {
+         font-weight: 500;
+         color: #666;
+         margin-top: 15px;
+      }
+
+      &__tableProducts {
+         box-shadow: 1px 1px 1px 0 rgb(0 0 0 / 5%), -1px -1px 1px 0 rgb(0 0 0 / 5%);
+      }
+
+      &__order {
+         .btnCancel {
             background-color: rgb(196, 0, 0);
-            &:hover{
+            &:hover {
                background-color: rgba(196, 0, 0, 0.9);
             }
          }

@@ -1,10 +1,12 @@
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from 'react-icons/md';
-import { Link } from "react-router-dom";
-import { Grid, Navigation } from "swiper";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from 'react-router-dom';
+import { Grid, Navigation } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/grid';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { customerLink } from '../../../helpers/linkConstants';
+import qs from 'qs';
 import '../styles/categoriesHome.scss';
 
 export default function CategoriesHome(props) {
@@ -17,21 +19,36 @@ export default function CategoriesHome(props) {
                slidesPerView={5}
                grid={{
                   rows: 2,
-                  fill: "row"
+                  fill: 'row',
                }}
                navigation={{
                   enabled: true,
                   nextEl: '.swiper-next-cate',
-                  prevEl: '.swiper-prev-cate'
+                  prevEl: '.swiper-prev-cate',
                }}
                spaceBetween={10}
                modules={[Grid, Navigation]}
             >
                {categoriesList.map((category) => {
                   const { avatarOfCate, name, _id } = category;
+
+                  const searchPam = new URLSearchParams();
+                  searchPam.set(
+                     'filter',
+                     qs.stringify({
+                        cateId: _id,
+                     })
+                  );
+
+                  const linkCate = `${customerLink.shopLink}?${searchPam.toString()}`;
+
                   return (
                      <SwiperSlide key={_id}>
-                        <Link className="homeWapper__categoriesWapper__cateSlide__link" to={'/'}>
+                        <Link
+                           className="homeWapper__categoriesWapper__cateSlide__link"
+                           to={linkCate}
+                           state={{ concat: true }}
+                        >
                            <div className="homeWapper__categoriesWapper__cateSlide__imageCate">
                               <img src={avatarOfCate} alt={name} />
                            </div>

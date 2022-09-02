@@ -1,7 +1,12 @@
 
-const scrollToAny = (ref) => {
+/**
+ * 
+ * @param {*} ref 
+ * @param {*} top position of scroll 
+ */
+const scrollToAny = (ref, top) => {
    window.scrollTo({
-      top: ref.current.offsetTop,
+      top: typeof top === 'number' ? 0 : ref.current.offsetTop,
       behavior: 'smooth'
    });
 };
