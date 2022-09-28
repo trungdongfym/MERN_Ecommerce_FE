@@ -17,18 +17,17 @@ function ShopPage() {
    const [pageSize, setPageSize] = useState(16);
    const [totalProducts, setTotalProducts] = useState(0);
 
+   // For init all query
+   const [allQuery, setAllQuery] = useQueryParam('all', {
+      sort: { _id: 1 },
+      pagination: { page: 0, pageSize: pageSize },
+   });
    const [sortQueryParam, setSortQueryParam] = useQueryParam('sort');
    const [filterQueryParam, setFilterQueryParam] = useQueryParam('filter');
    const [paginationParam, setPaginationParam] = useQueryParam('pagination');
    const [searchValueParam, setSearchValueParam] = useQueryParam('search', null, {
       stringParam: true,
    });
-   // For init all query
-   const [allQuery, setAllQuery] = useQueryParam('all', {
-      sort: { _id: 1 },
-      pagination: { page: 0, pageSize: pageSize },
-   });
-
    const refTopList = useRef();
 
    const getDataShopPage = useCallback(async () => {
@@ -74,7 +73,11 @@ function ShopPage() {
    }, [sortQueryParam, filterQueryParam, searchValueParam]);
 
    useEffect(() => {
-      setAllQuery({ ...allQuery, pagination: { page: page, pageSize: pageSize } });
+      setAllQuery({
+         ...allQuery,
+         sort: { _id: 1 },
+         pagination: { page: page, pageSize: pageSize },
+      });
    }, [page]);
 
    const handleChangePage = (e, pageChange) => {
@@ -115,7 +118,12 @@ function ShopPage() {
             })}
             {products && products.length === 0 ? (
                <div className="productEmpty">
-                  <div className="productEmpty__img"></div>
+                  <div
+                     className="productEmpty__img"
+                     style={{
+                        backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/static/cartEmpty.png)`,
+                     }}
+                  ></div>
                   <div className="productEmpty__notifyProductEmpty">Không có sản phẩm nào</div>
                </div>
             ) : null}

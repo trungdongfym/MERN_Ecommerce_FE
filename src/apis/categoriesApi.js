@@ -2,7 +2,7 @@ import axiosClient from './axiosClient';
 
 const addCategoryApi = async (category) => {
    try {
-      const cateSaved = await axiosClient.post('/admin/addCategories', category,{
+      const cateSaved = await axiosClient.post('/admin/addCategories', category, {
          headers: {
             'Content-Type': 'multipart/form-data'
          }
@@ -15,10 +15,10 @@ const addCategoryApi = async (category) => {
 
 const getCategoriesApi = async (objectQuery) => {
    try {
-      const categories = await axiosClient.get('/admin/getCategories',{
+      const categories = await axiosClient.get('/admin/getCategories', {
          params: objectQuery,
-         headers:{
-            'x-auth': false
+         headers: {
+            'auth': false
          }
       });
       return categories;
@@ -29,8 +29,8 @@ const getCategoriesApi = async (objectQuery) => {
 
 const searchCategoriesApi = async (searchText) => {
    try {
-      const categories = await axiosClient.get('/admin/searchCategories',{
-         params:{name: searchText}
+      const categories = await axiosClient.get('/admin/searchCategories', {
+         params: { name: searchText }
       });
       return categories;
    } catch (error) {
@@ -49,7 +49,7 @@ const deleteCategoryApi = async (cateID) => {
 
 const updateCategoriesApi = async (cateFormDate, cateID) => {
    try {
-      const response = await axiosClient.patch(`/admin/updateCategories/${cateID}`, cateFormDate,{
+      const response = await axiosClient.patch(`/admin/updateCategories/${cateID}`, cateFormDate, {
          headers: {
             'Content-Type': 'multipart/form-data'
          }

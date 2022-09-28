@@ -52,9 +52,13 @@ export default function useQueryParam(key, initSearchParam, options) {
       } else if (key !== 'all') {
          return searchParams.get(key);
       }
-   });
+   }, [searchParams]);
 
    useEffect(() => {
+      initSearchParams.forEach((val, key) => {
+         console.log(`Init::${key}:${val}`);
+      })
+
       setSearchParams(initSearchParams);
    }, []);
 
@@ -77,6 +81,11 @@ export default function useQueryParam(key, initSearchParam, options) {
    }, [paramValue]);
 
    const setValue = useCallback((newValue, optionsNavigate) => {
+      console.log(`new val:`, newValue);
+      searchParams.forEach((val, key) => {
+         console.log('ok');
+         console.log(`searchParam::${key}:${val}`);
+      })
       const newSearchParam = new URLSearchParams(searchParams);
 
       let newParamStr = newValue;

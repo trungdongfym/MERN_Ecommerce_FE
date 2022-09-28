@@ -23,7 +23,7 @@ const optionSelectSortPrice = [
 ];
 
 function TopbarShop() {
-   const [sortQuery, setSortQuery] = useQueryParam('sort', {});
+   const [sortQuery, setSortQuery] = useQueryParam('sort');
 
    const valueSelectSortPrice = useMemo(() => {
       if (!sortQuery || !sortQuery?.price) return '';

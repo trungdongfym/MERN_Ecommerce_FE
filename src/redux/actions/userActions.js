@@ -51,18 +51,20 @@ const loginUserAction = userLoginPayload => async (dispatch) => {
       }
 
       // check cart remote and cart local then merge them
-      const { _id: userID } = user;
-      const cartRemote = await getCartApi(userID) || [];
-      const cartLocal = getCartFromLocalStorage() || [];
-      const result = mergeCart(cartLocal, cartRemote);
-      if (result) {
-         const { isUpdateRemoteCart, newCart } = result;
-         if (isUpdateRemoteCart && newCart) {
-            await dispatch(updateCartAsyncAction(newCart, userID));
-         }else{
-            await dispatch(updateCartAsyncAction(newCart, null));
+      setTimeout(async () => {
+         const { _id: userID } = user;
+         const cartRemote = await getCartApi(userID) || [];
+         const cartLocal = getCartFromLocalStorage() || [];
+         const result = mergeCart(cartLocal, cartRemote);
+         if (result) {
+            const { isUpdateRemoteCart, newCart } = result;
+            if (isUpdateRemoteCart && newCart) {
+               await dispatch(updateCartAsyncAction(newCart, userID));
+            } else {
+               await dispatch(updateCartAsyncAction(newCart, null));
+            }
          }
-      }
+      }, 0);
 
       const cookie = new Cookies();
       //Get info token

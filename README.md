@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# Shop Man
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting started
 
-## Available Scripts
+```
+$ npm i
+$ npm start
+```
 
-In the project directory, you can run:
+-  Setup environment variable
 
-### `npm start`
+```
+$ REACT_APP_BASE_URL=http://localhost:3000
+$ REACT_APP_API_URL=http://localhost:5000/api
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Feature
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-  Login, login with google, facebook.
+-  Manage user.
+-  Manage products.
+-  Manage categories.
+-  Search and filter product.
+-  Manage product orders.
+-  Manage order.
 
-### `npm test`
+## Detail
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-  Landing page
 
-### `npm run build`
+![Alt text](./public/docs/landingpage.png?raw=true '- Landing page')
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-  Login with google
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Alt text](./public/docs/loginWithGoogle.png?raw=true '- Login with google')
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+-  Manage User Info
 
-### `npm run eject`
+![Alt text](./public/docs/mangeUserInfo.png?raw=true '- Manage User Info')
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+-  View oders
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Alt text](./public/docs/viewOders.png?raw=true '- View oders')
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![Alt text](./public/docs/viewDetailOrder.png?raw=true '- View detail oders')
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+-  Search And Filter Products
+   ![Alt text](./public/docs/searchAndFilterProducts.png?raw=true '- Search And Filter Products')
 
-## Learn More
+-  View Cart
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![Alt text](./public/docs/viewCart.png?raw=true '- View Cart')
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+-  Manage Users
 
-### Code Splitting
+![Alt text](./public/docs/manageUser.png?raw=true '- Manage Users')
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+-  Manage Products
 
-### Analyzing the Bundle Size
+![Alt text](./public/docs/manageProduct.png?raw=true '- Manage Products')
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+-  Manage Products
 
-### Making a Progressive Web App
+![Alt text](./public/docs/manageProductWarehouse.png?raw=true '- Manage Products')
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+-  Manage Categories
 
-### Advanced Configuration
+![Alt text](./public/docs/manageCategories.png?raw=true '- Manage Categories')
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+-  Manage Import Orders
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Alt text](./public/docs/manageImportOrders.png?raw=true '- Manage Import Orders')

@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getCategoriesApi } from '../../apis/categoriesApi';
 import { getListProductApi, getProductsApi } from '../../apis/productsApi';
-import { Page } from '../../components/base';
+import { Page, Spinner } from '../../components/base';
 import BestSellHome from '../../sections/customer/home/bestsallHome';
 import CategoriesHome from '../../sections/customer/home/categoriesHome';
 import FlashSaleHome from '../../sections/customer/home/flashSaleHome';
@@ -21,6 +21,7 @@ export default function HomePage() {
       flashSale: [],
       bestsellList: [],
    });
+   const [isLoading, setIsLoading] = useState(true);
 
    useEffect(() => {
       async function getDataHome() {
@@ -37,6 +38,7 @@ export default function HomePage() {
                flashSale: productFlashSale,
                bestsellList: bestsellProduct?.data?.products ?? [],
             });
+            setIsLoading(false);
          } catch (error) {
             console.log(error);
          }
@@ -46,58 +48,64 @@ export default function HomePage() {
 
    return (
       <Page title="Trang chủ" className="home">
-         <div className="homeWapper">
-            <div className="homeWapper__slideBar">
-               <Swiper
-                  slidesPerView={2}
-                  spaceBetween={10}
-                  autoplay={{
-                     delay: 3000,
-                     disableOnInteraction: false,
-                  }}
-                  slidesPerGroup={1}
-                  loop={true}
-                  loopFillGroupWithBlank={true}
-                  navigation={{
-                     enabled: true,
-                     nextEl: '.swiper-next-slideBar',
-                     prevEl: '.swiper-prev-slideBar',
-                  }}
-                  modules={[Navigation, Autoplay]}
-                  className="mySwiper"
-               >
-                  {slideBarConfig.map((item) => {
-                     const { id, image, path } = item;
-                     return (
-                        <SwiperSlide key={id}>
-                           <Link className="homeWapper__slideBar__link" to={path}>
-                              <img
-                                 className="homeWapper__slideBar__link__image"
-                                 src={image}
-                                 alt={id}
-                              />
-                           </Link>
-                        </SwiperSlide>
-                     );
-                  })}
-               </Swiper>
-               <div className="swiper-prev-slideBar">
-                  <MdOutlineArrowBackIos />
+         {isLoading ? (
+            <div className="homeWapper">
+               <Spinner />
+            </div>
+         ) : (
+            <div className="homeWapper">
+               <div className="homeWapper__slideBar">
+                  <Swiper
+                     slidesPerView={2}
+                     spaceBetween={10}
+                     autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                     }}
+                     slidesPerGroup={1}
+                     loop={true}
+                     loopFillGroupWithBlank={true}
+                     navigation={{
+                        enabled: true,
+                        nextEl: '.swiper-next-slideBar',
+                        prevEl: '.swiper-prev-slideBar',
+                     }}
+                     modules={[Navigation, Autoplay]}
+                     className="mySwiper"
+                  >
+                     {slideBarConfig.map((item) => {
+                        const { id, image, path } = item;
+                        return (
+                           <SwiperSlide key={id}>
+                              <Link className="homeWapper__slideBar__link" to={path}>
+                                 <img
+                                    className="homeWapper__slideBar__link__image"
+                                    src={image}
+                                    alt={id}
+                                 />
+                              </Link>
+                           </SwiperSlide>
+                        );
+                     })}
+                  </Swiper>
+                  <div className="swiper-prev-slideBar">
+                     <MdOutlineArrowBackIos />
+                  </div>
+                  <div className="swiper-next-slideBar">
+                     <MdOutlineArrowForwardIos />
+                  </div>
                </div>
-               <div className="swiper-next-slideBar">
-                  <MdOutlineArrowForwardIos />
+               <div className="homeWapper__categories">
+                  <CategoriesHome categoriesList={homeData?.categories} />
+               </div>
+               <div className="homeWapper__flashSale">
+                  <FlashSaleHome flashSaleList={homeData?.flashSale} />
+               </div>
+               <div className="homeWapper__bestsell">
+                  <BestSellHome bestsellList={homeData?.bestsellList} />
                </div>
             </div>
-            <div className="homeWapper__categories">
-               <CategoriesHome categoriesList={homeData?.categories} />
-            </div>
-            <div className="homeWapper__flashSale">
-               <FlashSaleHome flashSaleList={homeData?.flashSale} />
-            </div>
-            <div className="homeWapper__bestsell">
-               <BestSellHome bestsellList={homeData?.bestsellList} />
-            </div>
-         </div>
+         )}
       </Page>
    );
 }

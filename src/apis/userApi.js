@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const registerUserApi = async (user) => {
    try {
-      const response = await axiosClient.post('/user/register', user, { headers: { 'x-auth': false } });
+      const response = await axiosClient.post('/user/register', user, { headers: { 'auth': false } });
       return response;
    } catch (error) {
       throw error;
@@ -11,9 +11,12 @@ const registerUserApi = async (user) => {
 
 const loginUserApi = async (userLoginPayload) => {
    try {
-      const userAccessData = await axiosClient.post('/user/login', userLoginPayload, { headers: { 'x-auth': false } });
+      const userAccessData = await axiosClient.post('/user/login', userLoginPayload, {
+         headers: { 'auth': false }
+      });
       return userAccessData;
    } catch (error) {
+      console.log(error);
       throw error;
    }
 }
@@ -51,7 +54,7 @@ const getUserApi = async (userID) => {
 
 const checkEmailApi = async (email) => {
    try {
-      const response = await axiosClient.post(`/user/checkEmail`, {email});
+      const response = await axiosClient.post(`/user/checkEmail`, { email });
       return response;
    } catch (error) {
       throw error;
@@ -69,8 +72,8 @@ const changePasswordApi = async (dataPassChange, userID) => {
 
 const getUsersApi = async (objectQuery) => {
    try {
-      const users = await axiosClient.get('/user/getUsers',{
-         params:objectQuery
+      const users = await axiosClient.get('/user/getUsers', {
+         params: objectQuery
       });
       return users;
    } catch (error) {

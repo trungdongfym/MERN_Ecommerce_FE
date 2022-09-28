@@ -18,7 +18,7 @@ const getProductsApi = async (objectQuery) => {
       const products = await axiosClient.get('/getProducts', {
          params: objectQuery,
          headers: {
-            'x-auth': false
+            'auth': false
          }
       });
       return products;
@@ -32,7 +32,7 @@ const getListProductApi = async (objectQuery) => {
       const products = await axiosClient.get('/products', {
          params: objectQuery,
          headers: {
-            'x-auth': false
+            'auth': false
          }
       });
       return products;
@@ -46,7 +46,7 @@ const getRelateProductApi = async (productID) => {
       const products = await axiosClient.get('/getRelateProducts', {
          params: { productID },
          headers: {
-            'x-auth': false
+            'auth': false
          }
       });
       return products;

@@ -52,6 +52,7 @@ export default function DetailProductPage() {
             console.log(error);
          }
       }
+      setDetailProductData((prev) => ({ ...prev, product: null }));
       setAmountOrder(1);
       getProduct();
    }, [productID]);
@@ -158,7 +159,11 @@ export default function DetailProductPage() {
    useCloseModal(handleCloseModalNotify, modalNotify, 2500);
 
    if (!detailProductData.product) {
-      return <Spinner />;
+      return (
+         <div className="loadingContainer">
+            <Spinner />
+         </div>
+      );
    }
    const { product, relateProduct } = detailProductData;
    const { category, warehouse } = product;

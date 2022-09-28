@@ -3,6 +3,7 @@
 .cart {
    .cartWapper {
       padding-top: 30px;
+      min-height: calc(100vh - 105px);
 
       &__tableCartContainer {
          &__tableCart {
@@ -84,7 +85,8 @@
             color: #555;
          }
 
-         &__checkbox {}
+         &__checkbox {
+         }
 
          &__checkBoxLabel,
          &__delete {
@@ -125,7 +127,7 @@
                   background-color: $baseColor;
                   cursor: pointer;
                   margin-left: 15px;
-                  &:disabled{
+                  &:disabled {
                      cursor: not-allowed;
                      background-color: rgba($baseColor, 0.9);
                   }
@@ -174,7 +176,7 @@
          border-radius: 3px;
 
          &:hover {
-            background-color: rgba($color: $baseColor, $alpha: 0.9)
+            background-color: rgba($color: $baseColor, $alpha: 0.9);
          }
       }
    }

@@ -1,8 +1,8 @@
 import axios from 'axios';
-import RefreshTokenApi from './refreshTokenApi';
-import Cookies from 'universal-cookie';
 import qs from 'qs';
-
+import Cookies from 'universal-cookie';
+import { commonLink } from '../helpers/linkConstants';
+import RefreshTokenApi from './refreshTokenApi';
 
 const axiosClient = axios.create({
    baseURL: process.env.REACT_APP_API_URL,
@@ -21,16 +21,15 @@ axiosClient.interceptors.request.use(async (config) => {
    let accessToken = cookie.get('accessToken');
 
    // Check a request need accesstoken
-   const isRequestAuth = config.headers['x-auth'];
+   const isRequestAuth = config.headers['auth'];
    if (isRequestAuth === false) {
-      delete config.headers['x-auth'];
+      // delete config.headers['auth'];
       return config;
    }
    // If accessToken expired
-   if (!accessToken) {
+   if (!accessToken && isRequestAuth !== false) {
       try {
          refeshTokenApi = refeshTokenApi ? refeshTokenApi : RefreshTokenApi;
-
          const refreshToken = cookie.get('refreshToken');
          if (!refreshToken) {
             throw new Error('Not refreshtoken!');
@@ -49,7 +48,8 @@ axiosClient.interceptors.request.use(async (config) => {
       } catch (error) {
          localStorage.removeItem('user');
          cookie.remove('refreshToken');
-         window.location.reload();
+         window.location.href = commonLink.loginLink;
+         console.log("Axios error:", error);
       }
    }
    accessToken = 'Bearer ' + accessToken;
@@ -67,12 +67,12 @@ axiosClient.interceptors.response.use((response) => {
       // return new Promise((resolve, reject) => {
       //    setTimeout(() => {
       //       resolve(response.data);
-      //    }, 5000);
+      //    }, 2000);
       // });
    }
    return response;
 }, (err) => {
-   if(!axios.isCancel(err)){
+   if (!axios.isCancel(err)) {
       const { response } = err;
       throw new Error(response?.data || err);
    }

@@ -74,10 +74,11 @@ export default function Navbar(props) {
 
    const handleGotoShop = (e) => {
       e.preventDefault();
-      const searchPam = new URLSearchParams();
-      searchPam.set('sort', qs.stringify({ _id: 1 }));
-      searchPam.set('pagination', qs.stringify({ page: 0, pageSize: 16 }));
-      navigate(`${customerLink.shopLink}?${searchPam.toString()}`);
+      // const searchPam = new URLSearchParams();
+      // searchPam.set('sort', qs.stringify({ _id: 1 }));
+      // searchPam.set('pagination', qs.stringify({ page: 0, pageSize: 16 }));
+      // navigate(`${customerLink.shopLink}?${searchPam.toString()}`);
+      navigate(`${customerLink.shopLink}`);
    };
 
    const handleSearch = (e) => {

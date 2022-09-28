@@ -24,6 +24,10 @@ export const customerRoute = {
    ,
    children: [
       {
+         path: '/',
+         element: <HomePage />
+      },
+      {
          path: customerLink.userinfo,
          element:
             <RequireAuth>
@@ -35,10 +39,6 @@ export const customerRoute = {
             { path: customerLink.listOrder, element: <ListOrderPage /> },
             { path: customerLink.listOrder + '/:orderID', element: <DetailOrderPage /> }
          ]
-      },
-      {
-         path: '/',
-         element: <HomePage />
       },
       {
          path: customerLink.productsLink + '/:productID',
@@ -56,10 +56,10 @@ export const customerRoute = {
             </RequireAuth>
       },
       {
-         path: '/',
+         path: customerLink.shopLink,
          element: <ShopLayout />,
          children: [
-            { path: customerLink.shopLink, element: <ShopPage /> }
+            { path: '', element: <ShopPage /> }
          ]
       }
    ]

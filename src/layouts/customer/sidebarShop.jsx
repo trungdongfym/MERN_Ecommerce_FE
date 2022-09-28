@@ -30,7 +30,6 @@ function SidebarShop({ config }) {
    const [cateIdActive, setCateIdActive] = useState(filterQueryParams?.cateId);
    const [priceFilter, setPriceFilter] = useState({ minPrice: '', maxPrice: '' });
    const [priceRangeError, setPriceRangeError] = useState(false);
-   const [filterQueryParam, setFilterQueryParam] = useQueryParam('filter');
 
    useEffect(() => {
       setCateIdActive(filterQueryParams?.cateId);
@@ -81,15 +80,15 @@ function SidebarShop({ config }) {
    };
 
    const clickAllCategory = (e) => {
-      const cloneFilterParam = structuredClone(filterQueryParam);
+      const cloneFilterParam = structuredClone(filterQueryParams);
       if (cloneFilterParam?.cateId) {
          delete cloneFilterParam.cateId;
       }
       if (cloneFilterParam && Object.keys(cloneFilterParam).length === 0) {
-         setFilterQueryParam(null);
+         setFilterQueryParams(null);
          return;
       }
-      setFilterQueryParam(cloneFilterParam);
+      setFilterQueryParams(cloneFilterParam);
    };
 
    return (
